@@ -1,0 +1,102 @@
+<!-- hbox layout -->
+<div class="hbox hbox-auto-xs hbox-auto-sm bg-white" ng-controller="systemController">
+    <div class="bui-nav-tab" style="height: 384px;margin-top: 50px ">
+
+        <div class="col-sm-8">
+            <div class="col-sm-6">
+                <div class="panel-body">
+                    <form class="bs-example form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">头像：</label>
+
+                            <div class="col-lg-8">
+                                <a class="pull-left thumb-md avatar">
+                                    <img src="resource/img/a0.jpg" alt="...">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">人员姓名：</label>
+
+                            <div class="col-lg-8">
+                                <input type="email" class="form-control" placeholder="李丽">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">性别：</label>
+
+                            <div class="col-lg-8">
+                                <input type="email" class="form-control" placeholder="女">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">角色：</label>
+
+                            <div class="col-lg-8">
+                                <input type="email" class="form-control" placeholder=" ">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">邮箱：</label>
+
+                            <div class="col-lg-8">
+                                <input type="email" class="form-control" placeholder=" ">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="panel-body">
+                    <form class="bs-example form-horizontal">
+                        <div class="form-group" style="height: 65px">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">联系方式：</label>
+
+                            <div class="col-lg-8">
+                                <input type="email" class="form-control" placeholder=" ">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">职位：</label>
+
+                            <div class="col-lg-8">
+                                <input type="email" class="form-control" placeholder=" ">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">部门：</label>
+
+                            <div class="col-lg-8">
+                                <input type="email" class="form-control" placeholder=" ">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">初始密码：</label>
+
+                            <div class="col-lg-8">
+                                <input type="email" class="form-control" placeholder=" ">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div style="float: right">
+                    <button type="button" class="btn btn-bl" data-dismiss="modal">
+                        确 认
+                    </button>
+                    &nbsp; &nbsp;
+                    <button type="button" class="btn btn-bl" data-dismiss="modal">
+                        取 消
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+    <div data-ng-include="targetHumanModal"></div>
+</div>
+<!-- /hbox layout -->

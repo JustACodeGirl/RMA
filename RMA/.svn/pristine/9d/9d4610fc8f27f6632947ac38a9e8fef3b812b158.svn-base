@@ -1,0 +1,583 @@
+<div class="hbox  bg-white" ng-controller="systemController">
+  <div class="col w-md b-r" style="width: 200px">
+    <div class="vbox">
+      <div class="list-group list-group-lg">
+        <ul class="list-style_none leftsidebar_box" style="padding-left: 0;pxfont-weight: 1000;">
+          <li class="tl-item pl30 padder-v10" style="font-weight: 600">角色列表</li>
+          <div style="width:100%;height: 1px; margin: 0px auto; padding: 0px; background-color: #D8D8D8; overflow: hidden;"></div>
+          <li ng-repeat="role in roleList">
+            <a ng-class="{'bg-info': role.selected }"
+               class="tl-item pl30 padder-v10"
+               ng-click="selectRole(role)"
+               ng-bind="role.display_name">
+              <span class="pull-right text-muted">
+                <i class="fa fa-fw fa-angle-right text-active"></i>
+                <i class="fa fa-fw fa-angle-down text"></i>
+              </span>
+            </a>
+            <div style="width:100%; height: 1px; margin: 0px auto; padding: 0px; background-color: #D8D8D8; overflow: hidden;">
+            </div>
+          </li>
+        </ul>
+        <button data-toggle="modal"
+                data-target="#addrole"
+                class="btn btn-primary" style="margin-left: 30px">新增角色
+        </button>
+
+        <div class="modal fade" id="addrole" tabindex="-1" role="dialog">
+          <div class="modal-dialog-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">新增角色</h5>
+              </div>
+              <div class="modal-body clearfix">
+                <div class="row m-t-md">
+                  <div class="col-md-10" style="padding-left: 80px">
+                    <form role="form" name="myForm_role" ng-submit="submitForm(myForm_role.$valid)"
+                          class="form-horizontal" novalidate>
+                      <div class="form-group  has-feedback">
+                        <div class="col-md-4">
+                          <label for="name" class="text-right">角色代码:</label>
+                        </div>
+                        <div class="col-md-8">
+                          <input class="form-control" id="roleId" name="roleId" type="text"
+                                 placeholder="如：cs_accepter"
+                                 required
+                                 ng-model='role_name'/>
+                                            <span class="glyphicon glyphicon-ok form-control-feedback"
+                                                  ng-show="myForm_role.roleId.$dirty && myForm_role.roleId.$valid"></span>
+                        </div>
+                      </div>
+                      <div class="form-group  has-feedback">
+                        <div class="col-md-4">
+                          <label for="name" class="text-right">角色名称:</label>
+                        </div>
+                        <div class="col-md-8">
+                          <input class="form-control" id="roleName" name="roleName" type="text" required
+                                 ng-model='display_name'/>
+                                            <span class="glyphicon glyphicon-ok form-control-feedback"
+                                                  ng-show="myForm_role.roleName.$dirty && myForm_role.roleName.$valid"></span>
+                        </div>
+                      </div>
+                      <div class="form-group  has-feedback">
+                        <div class="col-md-4">
+                          <label for="name" class="text-right">角色描述:</label>
+                        </div>
+                        <div class="col-md-8">
+                          <input class="form-control" id="roleDescription" name="roleDescription" type="text" required
+                                 ng-model='description'/>
+                                            <span class="glyphicon glyphicon-ok form-control-feedback"
+                                                  ng-show="myForm_role.roleDescription.$dirty && myForm_role.roleDescription.$valid"></span>
+                        </div>
+                      </div>
+                      <div class="form-group  has-feedback">
+                        <div class="col-sm-4">
+                          <label for="name" class="text-right">所属工作流阶段:</label>
+                        </div>
+
+                        <div class="col-sm-8">
+                          <select class="form-control m-t-n-xs w"
+                                  ng-model="phaseItem"
+                                  ng-options="item.name for item in phaseLists"
+                                  ng-init="initPhaseItem(1)"
+                                  ng-click="changePhaseItem(phaseItem)" required>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group  has-feedback">
+                        <div class="col-sm-4">
+                          <label for="name" class="text-right">权限列表:</label>
+                        </div>
+                        <div class="col-sm-8">
+                          <lable class="checkbox-inline" ng-repeat="rightList in rightLists">
+                            <input type="checkbox"
+                                   ng-model="checked"
+                                   ng-change="selectRight(checked,rightList)"/>
+                            {{rightList.display_name}}
+                          </lable>
+                        </div>
+                      </div>
+                      <div class="form-group text-center">
+                        <input class="btn btn-success" ng-disabled="myForm_role.$invalid"
+                               ng-click="rolesAddrole()"
+                               type="submit"
+                               data-dismiss="modal"
+                               value="提交"/>
+                        <input class="btn btn-default"
+                               type="submit"
+                               data-dismiss="modal"
+                               value="取消"/>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="line"></div>
+
+    <div style="width: 1000px;margin-left: auto;margin-right: auto;height: 200px">
+      <div>
+        <P style="margin-top:10px;font-weight: 600">角色详细信息</P>
+        <button data-toggle="modal"
+                data-target="#deleteModal"
+                ng-click="showDeleteModal( )"
+                class="btn btn-primary float_r btn-sm" style="margin-top: -35px">删除
+        </button>
+        <button data-toggle="modal"
+                data-target="#updaterole"
+                ng-click="transmitRights(Role)"
+                class="btn btn-primary float_r btn-sm" style="margin-top: -35px;margin-right: 50px">修改
+        </button>
+        <div class="modal fade" id="updaterole" tabindex="-1" role="dialog">
+          <div class="modal-dialog-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">修改角色</h5>
+              </div>
+              <div class="modal-body clearfix">
+                <div class="row m-t-md">
+                  <label class="col-sm-4 control-label text-right">角色代码:</label>
+
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control m-t-n-xs text-limit"
+                           ng-model="Role.role_name"/>
+                  </div>
+                </div>
+                <div class="row m-t-md">
+                  <label class="col-sm-4 control-label text-right">角色名称:</label>
+
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control m-t-n-xs text-limit"
+                           ng-model="Role.display_name" placeholder="{{Role.display_name}}"/>
+                  </div>
+                </div>
+                <div class="row m-t-md">
+                  <label class="col-sm-4 control-label text-right">角色描述:</label>
+
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control m-t-n-xs text-limit"
+                           ng-model="Role.description"/>
+                  </div>
+                </div>
+                <div class="row m-t-md">
+                  <label class="col-sm-4 control-label text-right">所属工作流阶段:</label>
+
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control m-t-n-xs text-limit"
+                           ng-disabled="true"
+                           ng-model="Role.actProperty.name"/>
+                  </div>
+                </div>
+                <div class="row m-t-md">
+                  <label class="col-sm-4 control-label text-right">权限列表:</label>
+
+                  <div class="col-sm-6">
+                    <lable class="l_v" ng-repeat="right in Role.rights">
+                      <input type="checkbox" ng-model="right.granted"/>
+                      {{right.display_name}}
+                    </lable>
+                  </div>
+                </div>
+                <div style="height:25px"></div>
+                <div class="modal-footer" style="text-align: center">
+                  <button type="submit" class="btn btn-success" data-dismiss="modal"
+                          ng-click="UpdateRole()">保 存
+                  </button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
+                </div>
+              </div>
+              <div class="modal-body clearfix" ng-if="selectedType == 'human'">
+                <div class="row m-t-md">
+                  <label class="col-sm-4 control-label text-right">用户ID:</label>
+
+                  <div class="col-sm-7">{{human.human_id}}</div>
+                </div>
+                <div class="row m-t-md">
+                  <label class="col-sm-4 control-label text-right">用户名称:</label>
+
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control m-t-n-xs text-limit"
+                           ng-model="human.human_name"/>
+                  </div>
+                </div>
+                <div class="row m-t-md">
+                  <label class="col-sm-4 control-label text-right">描述:</label>
+
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control m-t-n-xs text-limit"
+                           ng-model="human.description"/>
+                  </div>
+                </div>
+                <div class="row m-t-md">
+                  <label class="col-sm-4 control-label text-right">联系方式:</label>
+
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control m-t-n-xs text-limit"
+                           ng-blur="isPhoneInputOver = 1"
+                           ng-focus="isPhoneInputOver = 0"
+                           ng-model="human.phone" required/>
+                  </div>
+                  <!--<div class="col-sm-4 col-sm-offset-1">-->
+                  <!--<span ng-class="{true:'text-info', false:'text-danger'}[isPhoneCheckProp]" ng-bind="phoneCheckStr"></span>-->
+                  <!--</div>-->
+                </div>
+                <div class="row m-t-md">
+                  <label class="col-sm-4 control-label text-right">邮箱:</label>
+
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control m-t-n-xs text-limit"
+                           ng-model="human.email"/>
+                  </div>
+                </div>
+                <div class="row m-t-md">
+                  <label class="col-sm-4 control-label text-right">部门：</label>
+
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control m-t-n-xs text-limit" ng-disabled="true"
+                           ng-model="human.unit_name"/>
+                  </div>
+                </div>
+                <div style="height: 30px"></div>
+                <div class="modal-footer" style="text-align: center">
+                  <button type="submit" class="btn btn-success" data-dismiss="modal"
+                          ng-click="updateHumanItem(phaseItem)">
+                    保 存
+                  </button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">
+                    取 消
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+          <div class="modal-dialog-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">删除角色</h5>
+              </div>
+              <div class="modal-body clearfix">
+                <div class="col-lg-1">
+                  <span class="text-2x fa fa-question-circle text-warning-dker"></span>
+                </div>
+                <div class="col-lg-11">
+                  <span>确定删除角色：</span>
+                  <span>{{Role.display_name}}</span>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="deleteModal()">
+                  确 定
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                  取 消
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <table class="table table-bordered table-hover table-condensed m-t-sm">
+        <tr class="">
+          <td class="col-sm-6">
+            <label class="col-sm-3">角色代码:</label>
+            <span class="">{{Role.role_name}}</span>
+          </td>
+          <td class="col-sm-6">
+            <label class="col-sm-3">角色名称:</label>
+            <span class="">{{Role.display_name}}</span>
+          </td>
+        </tr>
+        <tr class="">
+          <td class="col-sm-6">
+            <label class="col-sm-3">角色描述:</label>
+            <span class="">{{Role.description}}</span>
+          </td>
+          <td class="col-sm-6">
+            <label class="col-sm-3">创建时间:</label>
+            <span class="">{{Role.create_time | date:"yyyy-MM-dd HH:mm:ss"}}</span>
+          </td>
+        </tr>
+      </table>
+      <table class="table table-bordered table-hover table-condensed" style="margin-top: -21px; ">
+        <tr class="">
+          <td class="col-sm-12">
+            <label class="col-sm-2">所属工作流阶段:</label>
+            <span class="">{{Role.actProperty.name}}</span>
+          </td>
+        </tr>
+        <tr class="">
+          <td class="col-sm-12">
+            <label class="col-sm-2" style="width: 12.2%">权限列表:</label>
+            <span ng-repeat="right in Role.rights">
+              <span ng-if="right.granted ==true">
+                {{right.display_name}}&nbsp;&nbsp;
+              </span>
+            </span>
+          </td>
+        </tr>
+      </table>
+
+    </div>
+
+    <div style="width:100%; height: 1px; margin: 0px auto; padding: 0px; background-color: #D8D8D8; overflow: hidden;"></div>
+
+    <div onselectstart="return false" style="margin-right: auto;margin-left: auto;width: 1000px;overflow-y: auto;overflow-x: hidden">
+
+      <div class="line"></div>
+
+      <div class="f_l">
+        <p class="f_l font-bold m-t-sm">角色用户列表</p>
+        <button data-toggle="modal"
+                data-target="#addhuman"
+                class="btn btn-primary btn-sm" style="margin: 0 5px 0 595px">新增用户
+        </button>
+        <button data-toggle="modal"
+                data-target="#updatehuman"
+                ng-click="transmitDate(Role)"
+                class="btn btn-primary  m-r-xs btn-sm" ng-disabled="disabled">修改
+        </button>
+        <button data-toggle="modal"
+                data-target="#deleteModal2"
+                ng-click="showDeleteModalUser(Role)"
+                class="btn btn-primary  m-r-xs btn-sm" ng-disabled="disabled">删除
+        </button>
+
+        <div class="input-group m-t-n-lg" style="margin-left: 867px;">
+          <span class="input-group-addon input-sm"><i class="fa fa-search"></i></span>
+          <input type="text" class="form-control input-sm w-xsm" placeholder="用户查询" ng-model="query">
+        </div>
+      </div>
+
+      <table class="table table-bordered table-condensed input_descirb m-t-sm">
+        <tr>
+          <td>用户名称</td>
+          <td>用户描述</td>
+          <td>所在部门</td>
+          <td>联系方式</td>
+          <td>邮箱</td>
+          <td>创建时间</td>
+        </tr>
+        <tr ng-repeat="human in Role.humans |filter:query" ng-dblclick="showUpdatehuman(Role);" ng-class="{'activeB':human.selected}" ng-click="changeActive(human,Role.humans)">
+          <td class="col-sm-2">{{human.human_name}}</td>
+          <td class="col-sm-2">{{human.description}}</td>
+          <td class="col-sm-2">{{human.unit_name}}</td>
+          <td class="col-sm-2">{{human.phone}}</td>
+          <td class="col-sm-2">{{human.email}}</td>
+          <td class="col-sm-2">{{Role.create_time | date:"yyyy-MM-dd HH:mm:ss"}}</td>
+        </tr>
+        <div class="modal fade" id="deleteModal2" tabindex="-1" role="dialog">
+          <div class="modal-dialog-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">删除用户</h5>
+              </div>
+              <div class="modal-body clearfix">
+                <div class="col-lg-1">
+                  <span class="text-2x fa fa-question-circle text-warning-dker"></span>
+                </div>
+                <div class="col-lg-11">
+                  <span>确定删除用户：</span>
+                  <span>{{human.human_name}}？</span>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="deleteModalUser(human)">
+                  确 定
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                  取 消
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="updatehuman" tabindex="-1" role="dialog">
+          <div class="modal-dialog-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">修改用户</h5>
+              </div>
+
+              <div class="modal-body clearfix">
+                <div class="row m-t-md">
+                  <label class="col-sm-4 control-label text-right">用户ID:</label>
+
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control m-t-n-xs text-limit"
+                           ng-model="human.human_id"/>
+                  </div>
+                </div>
+                <div class="row m-t-md">
+                  <label class="col-sm-4 control-label text-right">用户名称:</label>
+
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control m-t-n-xs text-limit"
+                           ng-model="human.human_name"/>
+                  </div>
+                </div>
+                <div class="row m-t-md">
+                  <label class="col-sm-4 control-label text-right">描述:</label>
+
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control m-t-n-xs text-limit"
+                           ng-model="human.description"/>
+                  </div>
+                </div>
+                <div class="row m-t-md">
+                  <label class="col-sm-4 control-label text-right">联系方式:</label>
+
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control m-t-n-xs text-limit"
+                           ng-blur="isPhoneInputOver = 1"
+                           ng-focus="isPhoneInputOver = 0"
+                           ng-model="human.phone" required/>
+                  </div>
+                  <!--<div class="col-sm-4 col-sm-offset-1">-->
+                  <!--<span ng-class="{true:'text-info', false:'text-danger'}[isPhoneCheckProp]" ng-bind="phoneCheckStr"></span>-->
+                  <!--</div>-->
+                </div>
+                <div class="row m-t-md">
+                  <label class="col-sm-4 control-label text-right">邮箱:</label>
+
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control m-t-n-xs text-limit"
+                           ng-model="human.email"/>
+                  </div>
+                </div>
+                <div class="row m-t-md">
+                  <label class="col-sm-4 control-label text-right">部门：</label>
+
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control m-t-n-xs text-limit" ng-disabled="true"
+                           ng-model="human.unit_name"/>
+                  </div>
+                </div>
+                <div style="height: 30px"></div>
+                <div class="modal-footer" style="text-align: center">
+                  <button type="submit" class="btn btn-success" data-dismiss="modal"
+                          ng-click="updateHumanItem(phaseItem)">
+                    保 存
+                  </button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">
+                    取 消
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </table>
+
+
+      <div class="modal fade" id="addhuman" tabindex="-1" role="dialog">
+        <div class="modal-dialog-sm">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">新增用户</h5>
+            </div>
+            <div class="modal-body clearfix">
+              <div class="row m-t-md">
+                <div class="col-md-8" style="padding-left: 100px">
+                  <form role="form" name="myForm" ng-submit="submitForm(myForm.$valid)"
+                        class="form-horizontal" novalidate>
+                    <div class="form-group  has-feedback">
+                      <div class="col-md-4">
+                        <label for="name" class="text-right">人员姓名:</label>
+                      </div>
+                      <div class="col-md-8">
+                        <input class="form-control" id="name" name="name" type="text" required
+                               ng-model='human_name'/>
+                                        <span class="glyphicon glyphicon-ok form-control-feedback"
+                                              ng-show="myForm.name.$dirty && myForm.name.$valid"></span>
+                      </div>
+                    </div>
+                    <div class="form-group  has-feedback">
+                      <div class="col-md-4">
+                        <label for="minlength" class="text-right">初始密码:</label>
+                      </div>
+                      <div class="col-md-8">
+                        <input type="text" id="minlength" name="minlength" ng-minlength="6"
+                               placeholder="6位以上数字或字符"
+                               ng-model="password" class="form-control" required/>
+                        <span class="glyphicon glyphicon-ok form-control-feedback"
+                              ng-show="myForm.minlength.$dirty && myForm.minlength.$valid"></span>
+                      </div>
+                    </div>
+                    <div class="form-group  has-feedback">
+                      <div class="col-md-4">
+                        <label for="maxlength" class="text-right">联系电话:</label>
+                      </div>
+                      <div class="col-md-8">
+                        <input type="number" id="maxlength" name="maxlength" ng-model="phone"
+                               placeholder="11位电话号码"
+                               ng-minlength="11" ng-maxlength="11" class="form-control" required/>
+                        <span class="glyphicon glyphicon-ok form-control-feedback"
+                              ng-show="myForm.minlength.$dirty && myForm.minlength.$valid && myForm.maxlength.$dirty && myForm.maxlength.$valid"></span>
+                      </div>
+                    </div>
+                    <div class="form-group  has-feedback">
+                      <div class="col-md-4">
+                        <label for="email" class="text-right">邮件:</label>
+                      </div>
+                      <div class="col-md-8">
+                        <input type="email" id="email" name="email" ng-model="email"
+                               placeholder="Email格式要正确"
+                               class="form-control" required/>
+                        <span class="glyphicon glyphicon-ok form-control-feedback"
+                              ng-show="myForm.email.$dirty && myForm.email.$valid"></span>
+                      </div>
+                    </div>
+                    <div class="form-group  has-feedback">
+                      <div class="col-md-4">
+                        <label class="text-right">描述:</label>
+                      </div>
+                      <div class="col-md-8">
+                        <input type="text" id="description" name="description"
+                               placeholder="如：服务"
+                               ng-model="description"
+                               class="form-control"
+                               required/>
+                        <span class="glyphicon glyphicon-ok form-control-feedback"
+                              ng-show="myForm.description.$dirty && myForm.description.$valid"></span>
+                      </div>
+                    </div>
+                    <div class="form-group  has-feedback">
+                      <div class="col-md-4">
+                        <label class="text-right"> 部门:</label>
+                      </div>
+                      <div class="col-md-8">
+                        <select class="form-control w m-t-n-xs" ng-model="unitList"
+                                ng-options="type.unit_name for type in unitLists" required>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group text-right">
+                      <input class="btn btn-success" ng-disabled="myForm.$invalid"
+                             ng-click="addhuman()"
+                             type="submit"
+                             data-dismiss="modal"
+                             value="提交"/>
+                      <input class="btn btn-default"
+                             type="submit"
+                             data-dismiss="modal"
+                             value="取消"/>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

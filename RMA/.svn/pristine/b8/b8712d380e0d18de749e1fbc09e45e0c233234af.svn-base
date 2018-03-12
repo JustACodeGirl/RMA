@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>云新眼</title>
+
+    <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/video-js.min.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><img id="logo" src="img/logo.png" alt=""/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav text-center" id="myMenu">
+                <li class=""><a href="index.html">首 页</a></li>
+                <li><a href="detail.html">技术参数</a></li>
+                <li><a href="page_not_found.html">案 例</a></li>
+                <li><a href="faq.html">帮助中心</a></li>
+            </ul>
+            <ul class="nav navbar-nav">
+                <li><a href="page_not_found.html" class="text-center">
+                    <button class="btn btn-buy">立即购买</button>
+                </a></li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="text-center">
+                        <button id="signBtn" class="btn btn-default">登录</button>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a style="margin-right: 10px; color: black!important;cursor: pointer;font-size: 0.8em;" id="signName"
+                       class="text-center"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="banner">
+    <div class="container">
+        <div class="row" style="margin-top: 85px;">
+            <div class="col-xs-6" style="margin-left: 5%;">
+                <video class="video-js vjs-default-skin" controls preload="none" width="480" height="320"
+                       poster="img/new_ad_whole.jpg"
+                       data-setup="{}">
+                    <source src="img/new_ad_whole.mp4" type='video/mp4'/>
+                </video>
+            </div>
+            <div class="col-xs-5 text-white" data-scroll-reveal>
+                <h2 class="">云新眼(NewooEyes)智能门铃</h2>
+
+                <h2>您身边真正的安全管家！</h2>
+                </br>
+                </br>
+                <ul class="list-unstyled">
+                    <li><p>远程查看--随时随地用手机观看门铃状况</p></li>
+                    <li><p>实时提醒--实时向手机发送门铃提醒信息</p></li>
+                    <li><p>安全监控--安全的传输通道，防止隐私被窥探</p></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section">
+    <div class="container wrapper">
+        <div class="row" style="margin-top: 85px;">
+
+            <div class="col-xs-6" data-scroll-reveal>
+                <h2 class="">随时随地打开手机即可查看</h2>
+
+                </br>
+                </br>
+                <ul class="list-unstyled">
+                    <li><p>远程查看--随时随地用手机观看门铃状况</p></li>
+                    <li><p>实时提醒--实时向手机发送门铃提醒信息</p></li>
+                    <li><p>安全监控--安全的传输通道，防止隐私被窥探</p></li>
+                </ul>
+            </div>
+            <div class="col-xs-6">
+                <p><img src="img/index-bg23.jpg" alt="" width="100%"/></p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section no-border">
+    <div class="container wrapper">
+        <div class="row">
+            <div class="col-xs-12" style="border-bottom: 1px solid #d8d8d8;"></div>
+        </div>
+        <div class="row" style="margin-top: 85px;">
+            <div class="col-xs-6">
+                <p><img src="img/index-bg21.jpg" alt="" width="100%"/></p>
+            </div>
+            <div class="col-xs-6 text-right" data-scroll-reveal>
+                <h2 class="">可视对讲，沟通无障碍</h2>
+
+                </br>
+                </br>
+                <ul class="list-unstyled">
+                    <li><p>远程查看--随时随地用手机观看门铃状况</p></li>
+                    <li><p>实时提醒--实时向手机发送门铃提醒信息</p></li>
+                    <li><p>安全监控--安全的传输通道，防止隐私被窥探</p></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="section">
+    <div class="container wrapper">
+        <div class="row">
+            <div class="col-xs-12">
+                <span class="h3">六大特点,凸显卓越性能</span>
+                <span style="position: absolute;right: 0;top:20px;width: auto;left: 270px;border-bottom: 1px solid #d8d8d8;"></span>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 30px;" data-scroll-reveal>
+            <div class="col-xs-2 card ">
+                <div class="text-center">
+                    <img src="img/advantage_01.png" alt=""/>
+                    <p class="text-left">
+                        手机上实时远程监控，随时随地都可查看门外实时场景，放心出门
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-2 card">
+                <div class="text-center">
+                    <img src="img/advantage_02.png" alt=""/>
+                    <p  class="text-left">清晰记录接听/未接听的访客照片，过往访客信息随时查看</p>
+                </div>
+
+            </div>
+            <div class="col-xs-2 card">
+                <div class="text-center">
+                    <img src="img/advantage_03.png" alt=""/>
+                    <p class="text-left"></p>
+                </div>
+            </div>
+            <div class="col-xs-2 card">
+                <div class="text-center">
+                    <img src="img/advantage_04.png" alt=""/>
+                    <p class="text-left">已提供Android，IOS平台的App应用<br>苹果IOS 7.0/安卓Android4.0以上系统全平台支持</p>
+                </div>
+            </p></div>
+            <div class="col-xs-2 card">
+                <div class="text-center">
+                    <img src="img/advantage_05.png" alt=""/>
+                    <p class="text-left">
+                        异常侵入即刻录像，上传云端，做到有据可查，报警消息即时推送手机客户端，随时随地知晓异常情况
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-2 card">
+                <div class="text-center">
+                    <img src="img/advantage_06.png" alt=""/>
+                    <p class="text-left">多个手机/平板同时连接视频通话、监控</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer text-white">
+    <div class="text-center">
+        <div class="container" style="padding: 30px 0">
+            <div class="row">
+                <div class="col-xs-5 col-xs-offset-2">
+                    <div class="row">
+                        <div class="col-xs-12"><h4>获取最新 Newooeyes App !</h4></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <button id="iosApp" class="btn btn-download-app">下载 IOS App</button>
+                        </div>
+                        <div class="col-xs-6">
+                            <button id="androidApp" class="btn btn-download-app">下载 Android App</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4 widget-hide text-center" style="margin-top: 20px;">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <img alt="Download On App Store"
+                                 style="height: 80px;"
+                                 src="img/iOS_QR_Logo.png">
+                            <img alt="Download On Google Play" style="height: 80px; margin-left: 80px;"
+                                 src="img/android_QR_Logo.png">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h5 style="display: inline-block; width: 80px;">IOS</h5>
+                            <h5 style="display: inline-block; width: 80px; margin-left: 80px;">Android</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="public/jquery/jquery.min.js"></script>
+<script src="public/bootstrap/js/bootstrap.min.js"></script>
+<script src="public/scrollReveal/scrollReveal.js"></script>
+
+<script src="js/video.min.js"></script>
+<script src="js/index.js"></script>
+<script src="js/singin.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+
+<ul class="nav">
+    <li class="hidden-folded padder m-t m-b-sm text-lg m-l">
+        <span>{{app.moduleName}}</span>
+    </li>
+    <li ng-repeat="navInfo in app.navList | orderBy: 'display_order'">
+        <a href class="auto" ng-click="selectNavInfo(navInfo)">
+            <span class="pull-right text-muted">
+                <i class="fa fa-fw fa-angle-right text-active describ"></i>
+                <i class="fa fa-fw fa-angle-down text describ"></i>
+            </span>
+            <i class="glyphicon icon text-primary-dker {{navInfo.icon}}"></i>
+            <span  class="font-bold">{{navInfo.display_name}}</span>
+        </a>
+        <ul class="nav nav-sub">
+            <li class="nav-sub-header">
+                <a href>
+                    <span>{{navInfo.display_name}}</span>
+                </a>
+            </li>
+            <li ng-repeat="subMenu in navInfo.subnav">
+                <a ng-click="selectNavInfo(subMenu)">
+                    <span>{{subMenu.display_name}}</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+</ul>

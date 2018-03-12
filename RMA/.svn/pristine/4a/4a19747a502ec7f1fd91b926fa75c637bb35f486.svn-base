@@ -1,0 +1,44 @@
+﻿<div class="body">
+    <div style="height: 60px"></div>
+    <h1 class="login_h1">豪威科技有限公司售后服务系统</h1>
+
+    <div class="login" ng-init="isLogin()">
+        <div class="login_header">
+            <div class="switch" id="switch"><a class="switch_btn_focus" id="switch_qlogin" href="javascript:void(0);"
+                                               tabindex="7">用户登录</a>
+
+                <div class="switch_bottom" id="switch_bottom" style="position: absolute; width: 64px; left: 0px;"></div>
+            </div>
+        </div>
+        <div style="display: block; height: 235px;">
+            <!--登录-->
+            <div class="web_login" id="web_login">
+                <div class="login-box">
+                    <div class="login_form">
+                        <form name="loginform" accept-charset="utf-8" id="login_form" class="loginForm">
+                            <div class="uinArea" id="uinArea">
+                                <label class="input-tips">帐号：</label>
+                                <div class="inputOuter" id="uArea">
+                                    <input type="text" id="user" class="inputstyle" required ng-model="name"/>
+                                </div>
+                            </div>
+                            <div class="pwdArea" id="pwdArea">
+                                <label class="input-tips">密码：</label>
+                                <div class="inputOuter" id="pArea">
+                                    <input type="password" id="password" class="inputstyle" required ng-model="password"/>
+                                </div>
+                            </div>
+                            <div style="padding-left:50px;margin-top:20px;">
+                                <button
+                                       type="submit"
+                                       style="width:200px;"
+                                       class="button_blue"
+                                       ng-click="login({name:name, password:password}, loginform.$valid)">登录</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

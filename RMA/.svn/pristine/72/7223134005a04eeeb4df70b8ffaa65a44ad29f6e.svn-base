@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>云新眼</title>
+
+    <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css"/>
+
+    <link rel="stylesheet" href="css/index.css"/>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body style="background-color: #FFFFFF;">
+
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><img src="img/logo.png" alt="" id="logo"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav text-center" id="myMenu">
+                <li class=""><a href="index.html">首 页</a></li>
+                <li><a href="detail.html">技术参数</a></li>
+                <li><a href="page_not_found.html">案 例</a></li>
+                <li><a href="faq.html">帮助中心</a></li>
+            </ul>
+            <ul class="nav navbar-nav">
+                <li><a href="page_not_found.html" class="text-center">
+                    <button class="btn btn-buy">立即购买</button>
+                </a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="text-center">
+                        <button id="signBtn" class="btn btn-default">登录</button>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a style="margin-right: 10px; color: black!important;cursor: pointer;font-size: 0.8em;" id="signName"
+                       class="text-center"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</nav>
+
+<div class="container coming">
+    <h1 class="text-center text-muted"><img src="img/coming.jpg" alt=""/></h1>
+</div>
+
+<script src="public/jquery/jquery.min.js"></script>
+<script src="public/bootstrap/js/bootstrap.min.js"></script>
+
+<script src="js/singin.js"></script>
+</body>
+</html>

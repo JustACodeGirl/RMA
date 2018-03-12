@@ -1,0 +1,364 @@
+<!-- hbox layout -->
+<div ng-controller="SummaryController">
+    <div class="hbox hbox-auto-sm bg-white">
+        <div class="vbox">
+            <div class="col lt b-r w-s">
+                <div class="wrapper">
+                    <div class="h4">
+                        <span>{{selectedMenu.display_name}}</span>
+                    </div>
+                </div>
+                <form name="summaryform" class="form-horizontal form-validation">
+                    <div class="wrapper b-t m-t-xxs" style="min-height: 620px">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label ng-if="selectedMenu.navbar_name != 'stat_refund_amount'">受理时间:</label>
+                                <label ng-if="selectedMenu.navbar_name == 'stat_refund_amount'">退款时间:</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-11 m-l">
+                                <div class="input-group">
+                                    <input type="text" class="form-control text-limit"
+                                           datepicker-popup="{{dateformat}}"
+                                           ng-click="$event.preventDefault();$event.stopPropagation();fromOpened = true; toOpened = false;"
+                                           ng-model="summaryArgs.startTime" is-open="fromOpened"
+                                           title="(格式为：yyyy-MM-dd)"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-b-xs m-t-xs">
+                            <div class="col-md-12">
+                                <label>到:</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-11 m-l">
+                                <div class="input-group">
+                                    <input type="text" class="form-control text-limit"
+                                           datepicker-popup="{{dateformat}}"
+                                           ng-click="$event.preventDefault();$event.stopPropagation();toOpened = true; fromOpened = false;"
+                                           ng-model="summaryArgs.endTime" is-open="toOpened"
+                                           title="(格式为：yyyy-MM-dd)"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="selectedMenu.navbar_name == 'stat_bill_num' || selectedMenu.navbar_name == 'stat_bill_query'">
+                            <div class="row m-b-xs m-t-xs">
+                                <div class="col-md-12">
+                                    <label>所属省份:</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-11 m-l">
+                                    <select class="form-control w-full"
+                                            ng-model="summaryArgs.province"
+                                            ng-options="province.region_name for province in provinces"
+                                            ng-change="getCity()">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row m-b-xs m-t-xs">
+                                <div class="col-md-12">
+                                    <label>所属城市:</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-11 m-l">
+                                    <select class="form-control w-full"
+                                            ng-model="summaryArgs.city"
+                                            ng-options="city.region_name for city in cities"
+                                            ng-change="getCounty()" >
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row m-b-xs m-t-xs">
+                                <div class="col-md-12">
+                                    <label>所属区/县:</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-11 m-l">
+                                    <select class="form-control w-full"
+                                            ng-model="summaryArgs.county"
+                                            ng-options="county.region_name for county in counties">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="selectedMenu.navbar_name == 'stat_bill_num'
+                                    || selectedMenu.navbar_name == 'stat_return_reason'|| selectedMenu.navbar_name == 'stat_refund_amount'">
+                            <div class="row m-b-xs m-t-xs">
+                                <div class="col-md-12">
+                                    <label>商品类型:</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-11 m-l">
+                                    <select class="form-control w-full"
+                                            ng-model="summaryArgs.productType"
+                                            ng-options="productType.name for productType in productTypesLocal">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="selectedMenu.navbar_name == 'stat_return_reason'">
+                            <div class="row m-b-xs m-t-xs">
+                                <div class="col-md-12">
+                                    <label>售后原因:</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-11 m-l">
+                                    <select class="form-control w-full"
+                                            ng-model="summaryArgs.reason"
+                                            ng-options="applyReason.name for applyReason in applyReasonsLocal">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="selectedMenu.navbar_name == 'stat_bill_query'">
+                            <div class="row m-b-xs m-t-xs">
+                                <div class="col-md-12">
+                                    <label>申请类型:</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-11 m-l">
+                                    <select class="form-control w-full"
+                                            ng-model="summaryArgs.applyType"
+                                            ng-options="applyType.name for applyType in applyTypesLocal">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row m-b-xs m-t-xs">
+                                <div class="col-md-12">
+                                    <label>联系方式:</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-11 m-l">
+                                    <input type="text" class="form-control w-full"
+                                           ng-model="summaryArgs.phone" title="(0551-5534567 或者 13866665688)"
+                                           pattern="^(\d{3,4}-)?\d{7,8}$|1[3578][0-9]{9}$|15[89]\d{8}$"/>
+                                </div>
+                            </div>
+                            <div class="row m-b-xs m-t-xs">
+                                <div class="col-md-12">
+                                    <label>商品编号:</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-11 m-l">
+                                    <input type="text" class="form-control w-full"
+                                           ng-model="summaryArgs.sku"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="selectedMenu.navbar_name == 'stat_bill_query'">
+                            <div class="row m-b-xs m-t-xs">
+                                <div class="col-md-12">
+                                    <label>当前所处阶段:</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-11 m-l">
+                                    <select class="form-control w-full"
+                                            ng-model="summaryArgs.phase"
+                                            ng-options="phase.name for phase in phasesLocal">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="selectedMenu.navbar_name == 'stat_bill_overtime'">
+                            <div class="row m-b-xs m-t-xs">
+                                <div class="col-md-12">
+                                    <label>超时阶段:</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-11 m-l">
+                                    <select class="form-control w-full"
+                                            ng-model="summaryArgs.phase"
+                                            ng-options="phase.name for phase in phasesLocal">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="selectedMenu.navbar_name == 'stat_repair_return'">
+                            <div class="row m-b-xs m-t-xs">
+                                <div class="col-md-12">
+                                    <label>所属部门:</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-11 m-l">
+                                    <select class="form-control w-full"
+                                            ng-model="summaryArgs.unit"
+                                            ng-options="unit.name for unit in unitsLocal">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="selectedMenu.navbar_name != 'stat_bill_query'">
+                            <div class="row m-b-xs m-t-xs">
+                                <div class="col-md-12">
+                                    <label>时间粒度:</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-11 text-center">
+                                    <label class="i-checks m-b-none m-r-xxs">
+                                        <input type="radio" name="timeunit" ng-model="summaryArgs.timeUnit" value="YEAR" ng-change="onTimeUnitChange()"><i></i>年
+                                    </label>
+                                    <!--<label class="i-checks m-b-none m-r-xxs">-->
+                                        <!--<input type="radio" name="timeunit" ng-model="summaryArgs.timeUnit" value="QUARTER" ng-change="onTimeUnitChange()"><i></i>季-->
+                                    <!--</label><br>-->
+                                    <label class="i-checks m-b-none m-r-xxs">
+                                        <input type="radio" name="timeunit" ng-model="summaryArgs.timeUnit" value="MONTH" ng-change="onTimeUnitChange()"><i></i>月
+                                    </label>
+                                    <!--<label class="i-checks m-b-none m-r-xxs">-->
+                                        <!--<input type="radio" name="timeunit" ng-model="summaryArgs.timeUnit" value="WEEK" ng-change="onTimeUnitChange()"><i></i>周-->
+                                    <!--</label>-->
+                                    <label class="i-checks m-b-none m-r-xxs">
+                                        <input type="radio" name="timeunit" ng-model="summaryArgs.timeUnit" value="DAY" ng-change="onTimeUnitChange()"><i></i>日
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-md-12 text-center">
+                                <button class="btn btn-primary w-s" ng-click="summary(summaryform.$valid)" type="submit"
+                                        ng-if="selectedMenu.navbar_name != 'stat_bill_query'">统计</button>
+                                <button class="btn btn-primary w-s" ng-click="query(summaryform.$valid)" type="submit"
+                                        ng-if="selectedMenu.navbar_name == 'stat_bill_query'">查询</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="vbox">
+                <div class="wrapper bg-light lt b-b">
+                    <span class="text-muted">售后案件统计图表：</span>
+                    <button class="btn btn-primary w-xs" style="float: right" ng-click="export()" ng-disabled="!canExport"> 导出Excel</button>
+                </div>
+                <div class="row-row">
+                        <div class="cell">
+                            <div class="cell-inner m-t-xs"  ng-if="selectedMenu.navbar_name != 'stat_bill_query'">
+                                <div class="wrapper m-t-n-md">
+                                    <table class="table text-center table-bordered">
+                                        <thead class="bg-light dkker">
+                                        <tr>
+                                            <th ng-if="data.ticks" style="padding:15px 30px 15px 30px;"></th>
+                                            <th class="text-center" ng-repeat="tick in data.ticks" style="padding:15px 0px 15px 0px">{{tick[1]}}</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="tdata in data.chart">
+                                            <td class="text-center bg-light dkker font-bold v-middle" style="padding:0px">{{tdata.label}}</td>
+                                            <td ng-repeat="vdata in tdata.data" class="v-middle" style="padding:0px">
+                                                <span ng-if="tdata.label == '总计' || vdata[1] == 0" class="btn">{{vdata[1]}}</span>
+                                                <button data-toggle="modal" ng-if="tdata.label != '总计' && vdata[1] !=0"
+                                                        data-target="#summaryDetail"
+                                                        class="btn btn-link" style="padding:10px 3px 10px 3px;"
+                                                        ng-click="getSummaryDetail($index, tdata.label)">{{vdata[1]}}</button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div ng-if="selectedMenu.navbar_name != 'stat_bill_overtime'" style="width:1170px">
+                                    <tabset class="tab-container wrapper m-t-n-lg">
+                                        <tab>
+                                            <tab-heading>
+                                                <i class="icon-bar-chart m-r-xs"></i>柱状图
+                                            </tab-heading>
+                                            <div class="tab-content" id="barchart" style="height:300px; width: 1140px">
+                                            </div>
+                                        </tab>
+                                        <tab ng-if="selectedMenu.navbar_name != 'stat_refund_amount'">
+                                            <tab-heading>
+                                                <i class="icon-bar-chart m-r-xs"></i>饼状图
+                                            </tab-heading>
+                                            <div class="tab-content" id="piechart" style="height:300px;width: 1140px"></div>
+                                        </tab>
+                                        <tab>
+                                            <tab-heading >
+                                                <i class="icon-bar-chart m-r-xs"></i>曲线图
+                                            </tab-heading>
+                                            <div class="tab-content" id="linechart" style="height:300px; width: 1140px" >
+                                            </div>
+                                        </tab>
+                                        <!--<tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
+                                            {{tab.content}}
+                                        </tab>-->
+                                    </tabset>
+                                </div>
+                            </div>
+                            <div class="cell-inner m-t-xs"  ng-if="selectedMenu.navbar_name == 'stat_bill_query'">
+                                <div class="wrapper m-t-n-md">
+                                    <table class="table text-center table-bordered">
+                                        <thead class="bg-light dkker">
+                                        <tr>
+                                            <th class="text-center" ng-repeat="label in labels" style="padding:10px 0px 10px 0px">{{label}}</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="tdata in tdatas">
+                                            <td>{{tdata.bill_no}}</td>
+                                            <td>{{tdata.apply_type_name}}</td>
+                                            <td>{{tdata.goods_type_name}}</td>
+                                            <td>{{tdata.sku}}</td>
+                                            <td>{{tdata.client_name}}</td>
+                                            <td>{{tdata.phone}}</td>
+                                            <td>{{tdata.buy_time | date: 'yyyy-MM-dd'}}</td>
+                                            <td>{{tdata.province_name}}</td>
+                                            <td>{{tdata.city_name}}</td>
+                                            <td>{{tdata.district_name}}</td>
+                                            <td>{{tdata.act_property_name}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="summaryDetail" role="dialog">
+        <div class="modal-dialog w-auto-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">统计结果反查</h5>
+                </div>
+                <div style="min-height: 300px" class="wrapper">
+                    <table class="table text-center table-bordered">
+                        <thead class="bg-light dkker">
+                        <tr>
+                            <th class="text-center" ng-repeat="label in labels" style="padding:10px 0px 10px 0px">{{label}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="querydata in requerydata">
+                            <td>{{querydata.bill_no}}</td>
+                            <td>{{querydata.apply_type_name}}</td>
+                            <td>{{querydata.goods_type_name}}</td>
+                            <td>{{querydata.sku}}</td>
+                            <td>{{querydata.client_name}}</td>
+                            <td>{{querydata.phone}}</td>
+                            <td>{{querydata.buy_time | date: 'yyyy-MM-dd'}}</td>
+                            <td>{{querydata.province_name}}</td>
+                            <td>{{querydata.city_name}}</td>
+                            <td>{{querydata.district_name}}</td>
+                            <td>{{querydata.act_property_name}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- /hbox layout -->

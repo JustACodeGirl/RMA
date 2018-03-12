@@ -1,0 +1,24 @@
+{
+  "name": "newooeyes",
+  "description": "Front end for newooeyes",
+  "main": "",
+  "authors": [
+    "Leo.Liu"
+  ],
+  "license": "ISC",
+  "homepage": "index.html",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angularjs": "1.2.20",
+    "bootstrap": "^3.3.6",
+    "jquery": "^1.9",
+    "fullpage.js": "fullpage#^2.7.9"
+  }
+}

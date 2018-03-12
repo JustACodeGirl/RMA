@@ -1,0 +1,312 @@
+<!-- hbox layout -->
+<div class="hbox hbox-auto-sm bg-white" ng-controller="businessController">
+  <div class="vbox">
+    <div class="nav-tabs-alt">
+      <ul class="nav nav-tabs nav-justified">
+        <li ng-class="{'active': tabs[0]}">
+          <a href ng-click="tab(0)">邮寄津贴设置</a>
+        </li>
+        <li ng-class="{'active': tabs[1]}">
+          <a href ng-click="tab(1);getShedule()">作息时间设置</a>
+        </li>
+        <li ng-class="{'active': tabs[2]}">
+          <a href ng-click="tab(2);today()">节假日时间设置</a>
+        </li>
+        <li ng-class="{'active': tabs[3]}">
+          <a href ng-click="tab(3);getActdeftime()">阶段截止时限设置</a>
+        </li>
+      </ul>
+    </div>
+    <div class="cell scrollable hover">
+      <div class="cell-inner">
+        <div class="tab-content">
+          <div class="tab-pane" ng-class="{'active': tabs[0]}">
+            <div class="bui-nav-tab mtl-lg">
+              <div class="col-lg-12">
+                <div class="panel-body">
+                  <form class="bs-example form-horizontal" style="width: 1100px">
+                    <div class="form-group" ng-repeat="value in areaItems"
+                         ng-init="isShowText = true">
+                      <div>
+                        <!--label text-base w_l-->
+                        <label class="col-sm-2 col-xs-2 " style="font-family: 微软雅黑; font-size: 1.1em; color:black">{{value.area_name}}：</label>
+
+                        <div class="col-sm-1 col-xs-2  mp_0 w_l" ng-repeat="item in value.provinces" ng-show="isShowText">
+                          <div>{{item.province_name}}：{{item.subsidy|currency}}</div>
+                        </div>
+                        <div class="col-sm-1 col-xs-2 mp_0 w_l" ng-repeat="item in value.provinces" style="color: #23b7e5;" ng-hide="isShowText">
+                          <div class="f_l">{{item.province_name}}：¥&nbsp;</div>
+                          <div class="f_l m_xxs">
+                            <input type="number" class="form-control input_m" ng-model="item.subsidy"/>
+                          </div>
+
+                        </div>
+                        <div class="" ng-show="isShowText">
+                          <button type="button" class="btn btn-primary" style="float:right;text-align:right;" ng-click="isShowText = false">
+                            修 改
+                          </button>
+                        </div>
+                      </div>
+                      <div class=""  style="float:right;text-align: right;" ng-hide="isShowText">
+                        <button type="button" class="btn btn-success" ng-click="savePostage(value);isShowText = true">
+                          保 存
+                        </button>
+                        <button type="button" class="btn btn-default" ng-click="isShowText = true">
+                          取 消
+                        </button>
+                      </div>
+                      <!--width: 1200px; height: 1px; margin: 0px auto; padding: 0px; background-color: black; overflow: hidden-->
+                      <div style="width: 1100px; height: 1px; margin: 0px auto; padding: 0px; background-color: #D8D8D8; overflow: hidden;">
+                      </div>
+
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" ng-class="{'active': tabs[1]}">
+            <div class=""> <!--bui-nav-tab mtl-lg-->
+              <div ng-show="isShow"> <!--class="col-sm-9"-->
+                <!--<div class="col-sm-10">-->
+                <div class="panel-describ">
+                  <table class="table table-bordered table-hover table-condensed" style="text-align: center">
+                    <tr>
+                      <td class="col-sm-2"><b>作息时间</b></td>
+                      <td class="col-sm-3"><b>上班时间(HH:MM)</b></td>
+                      <td class="col-sm-3"><b>下班时间(HH:MM)</b></td>
+                      <td class="col-sm-4"><b>编辑</b></td>
+                    </tr>
+                    <tr ng-init="isAmShow = true">
+                      <td class="col-sm-1 v-middle">上午</td>
+                      <td class="v-middle" ng-show="isAmShow">
+                        {{scheduleTime.am_start_time | date:'HH:mm'}}
+                      </td>
+
+                      <td class="col-sm-3 v-middle" ng-show="isAmShow">
+                        <span>{{scheduleTime.am_end_time | date:'HH:mm'}}</span>
+                      </td>
+                      <td class="col-sm-3" ng-show="isAmShow">
+                        <button type="button" class="btn btn-primary"
+                                ng-click="isAmShow = false">
+                          修 改
+                        </button>
+                      </td>
+                      <td class="col-sm-3" ng-hide="isAmShow">
+                        <input type="text" class="input_m input_descirb"
+                               ng-model="scheduleTime.am_start_time">
+
+                      </td>
+                      <td class="col-sm-3" ng-hide="isAmShow">
+                        <input type="text" class="input_m input_descirb"
+                               ng-model="scheduleTime.am_end_time">
+                      </td>
+                      <td ng-hide="isAmShow">
+                        <button type="button" class="btn btn-success"
+                                ng-click="saveSchedule();isAmShow = true">
+                          保 存
+                        </button>
+                        <button type="button" class="btn btn-default"
+                                ng-click="isAmShow = true">
+                          取 消
+                        </button>
+                      </td>
+                    </tr>
+
+                    <tr ng-init="isTextShow = true">
+                      <td class="col-sm-1 v-middle">下午</td>
+                      <td class="col-sm-3 v-middle" ng-show="isTextShow">
+                        {{scheduleTime.pm_start_time | date:'HH:mm'}}
+                      </td>
+                      <td class="col-sm-3 v-middle" ng-show="isTextShow">
+                        <span>{{scheduleTime.pm_end_time | date:'HH:mm'}}</span>
+                      </td>
+                      <td class="col-sm-3" ng-show="isTextShow">
+                        <button type="button" class="btn btn-primary"
+                                ng-click="isTextShow = false">
+                          修 改
+                        </button>
+                      </td>
+                      <td class="" ng-hide="isTextShow">
+                        <input type="text" class="input_m input_descirb"
+                               ng-model="scheduleTime.pm_start_time">
+                      </td>
+                      <td class="" ng-hide="isTextShow">
+                        <input type="text" class="input_m input_descirb"
+                               ng-model="scheduleTime.pm_end_time">
+                      </td>
+                      <td class="" ng-hide="isTextShow">
+                        <button type="button" class="btn btn-success"
+                                ng-click="saveSchedule();isTextShow = true">
+                          保 存
+                        </button>
+                        <button type="button" class="btn btn-default"
+                                ng-click="isTextShow = true">
+                          取 消
+                        </button>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+                <!--</div>-->
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" ng-class="{'active': tabs[2]}">
+            <div class="wrapper-md bg-light">
+              <button type="button" class="btn btn-default btn-addon pull-right m-t-n-xs" ui-toggle-class="hide" target="#aside">
+                <!--<i class="fa fa-bars"></i> -->
+                <i class="fa fa-trash-o"></i>
+                节日列表
+              </button>
+              <button type="button"
+                      class="btn btn-sm btn-primary btn-addon"
+                      data-toggle="modal"
+                      data-target="#addfestival">
+                <i class="fa fa-plus"></i>新增节假日
+              </button>
+            </div>
+            <div class="hbox hbox-auto-xs hbox-auto-sm">
+              <div class="col wrapper-md">
+                <div id="calendar"  class="calendar" ng-model="eventSources" config="uiConfig.calendar"
+                     ui-calendar="uiConfig.calendar">
+                </div>
+              </div>
+              <div class="col w-md w-auto-xs bg-light dk bg-auto b-l" id="aside">
+                <div class="wrapper">
+                  <div ng-repeat="e in events" class="bg-white-only r r-2x m-b-xs wrapper-sm bg-success bg {{e.className[0]}}">
+                    <div class="form-control m-t-n-xs no-border no-padder no-bg">{{e.title}}</div>
+                    <a class="pull-right text-xs text-white" ng-click="remove($index,e.id)">删除</a>
+                    <div class="text-xs text-white ">{{e.start | date:"MMM dd"}} - {{e.end | date:"MMM dd"}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal fade" id="addfestival" tabindex="-1" role="dialog">
+              <div class="modal-dialog-sm">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">新增节假日</h5>
+                  </div>
+                  <div class="modal-body clearfix">
+                    <div class="row m-t-md">
+                      <div class="col-md-8" style="padding-left: 100px">
+                        <form role="form" name="myForm" ng-submit="submitForm(myForm.$valid)"
+                              class="form-horizontal" novalidate>
+                          <div class="form-group  has-feedback">
+                            <div class="col-md-4">
+                              <label for="name" class="text-right">节假日:</label>
+                            </div>
+                            <div class="col-md-8">
+                              <input class="form-control" id="name" name="name"
+                                     type="text" required
+                                     ng-model='festival.name'/>
+                            </div>
+                          </div>
+                          <div class="form-group  has-feedback">
+                            <div class="col-md-4">
+                              <label class="text-right">开始日期:</label>
+                            </div>
+                            <div class="col-md-8">
+                              <input type="text" class="form-control text-limit"
+                                     placeholder="请选择……"
+                                     datepicker-popup="{{dateformat}}"
+                                     ng-click="$event.preventDefault();$event.stopPropagation();fromOpened = true; toOpened = false;"
+                                     ng-model="festival.start_date" is-open="fromOpened"
+                                     title="(格式为：yyyy-MM-dd)" required/>
+                            </div>
+                          </div>
+                          <div class="form-group  has-feedback">
+                            <div class="col-md-4">
+                              <label class="text-right">结束日期:</label>
+                            </div>
+                            <div class="col-md-8">
+                              <input type="text" class="form-control text-limit"
+                                     placeholder="请选择……"
+                                     datepicker-popup="{{dateformat}}"
+                                     ng-click="$event.preventDefault();$event.stopPropagation();toOpened = true; fromOpened = false;"
+                                     ng-model="festival.end_date" is-open="toOpened"
+                                     title="(格式为：yyyy-MM-dd)" required/>
+                            </div>
+                          </div>
+                          <div class="form-group text-right">
+                            <input class="btn btn-success" ng-disabled="myForm.$invalid && (unitList.unit_id == null)"
+                                   ng-click="saveFestival(festival)"
+                                   type="submit"
+                                   value="提交"/>
+                            <input class="btn btn-default"
+                                   type="submit"
+                                   data-dismiss="modal"
+                                   value="取消"/>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" ng-class="{'active': tabs[3]}">
+            <div class=""> <!--bui-nav-tab mtl-lg-->
+              <div ng-show="isShow"> <!--class="col-sm-9"-->
+                <!--<div class="col-sm-10">-->
+                <div class="panel-describ">
+                  <table class="table table-bordered table-hover table-condensed" style="text-align: center">
+                    <tr>
+                      <td><b>角色</b></td>
+                      <td><b>警告时间(小时)</b></td>
+                      <td><b>截止时间(小时)</b></td>
+                      <td><b>编辑</b></td>
+                    </tr>
+
+                    <tr class="" ng-init="isTextShow = true" ng-repeat="value in actDeftime" >
+                      <td class="col-sm-3 col-xl-3 v-middle">
+                        {{value.act_def_name}}
+                      </td>
+                      <td class="col-sm-3 col-xl-3 v-middle" ng-show="isTextShow">
+                        <span>{{value.warning_limit}}&nbsp;&nbsp;</span>
+                      </td>
+                      <td class="col-sm-3 col-xl-3 v-middle" ng-show="isTextShow">
+                        <span>{{value.dead_limit}}&nbsp;&nbsp;</span>
+                      </td>
+                      <td class="col-sm-3 col-xl-3" ng-show="isTextShow">
+                        <button type="button" class="btn btn-primary btn-sm"
+                                ng-click="isTextShow = false">
+                          修 改
+                        </button>
+                      </td>
+                      <td class="" ng-hide="isTextShow">
+                            <span><input type="number" class="input_m input_descirb"
+                                         ng-model="value.warning_limit">
+                            </span>
+                      </td>
+                      <td class="" ng-hide="isTextShow">
+                            <span><input type="number" class="input_m input_descirb"
+                                         ng-model="value.dead_limit">
+                            </span>
+                      </td>
+                      <td class="" ng-hide="isTextShow">
+                        <button type="button" class="btn btn-success btn-sm"
+                                ng-click="saveActdeftime(value);isTextShow = true">
+                          保 存
+                        </button>
+                        <button type="button" class="btn btn-default btn-sm"
+                                ng-click="isTextShow = true">
+                          取 消
+                        </button>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+                <!--</div>-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /hbox layout -->

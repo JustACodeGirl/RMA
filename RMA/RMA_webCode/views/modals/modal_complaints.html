@@ -1,0 +1,992 @@
+<div ng-controller="ComplaintsModalController">
+
+    <!-- 客诉模块--登记页面 -->
+    <div class="modal fade" id="register" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">客诉登记</h5>
+                </div>
+                <form name="registerform" class="form-horizontal form-validation">
+                    <div class="modal-body clearfix">
+                        <div class="row">
+                            <h6 class="m-l-lg font-bold">客户信息</h6>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="col-sm-6 control-label text-right"><span style="color: red;">*</span>申请类型:</label>
+
+                                <div class="col-sm-6">
+                                    <select class="form-control w-full m-t-n-xs" style="width: 176px;"
+                                            ng-model="selectApplyType"
+                                            ng-options="applyType.name for applyType in applyTypes">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <label class="col-sm-4 control-label text-right"><span style="color: red;">*</span>客户姓名:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs text-limit"
+                                           ng-model="registerData.client_name" title="请控制在50个字以内"
+                                           pattern="^[\s\S]{1,50}$" required/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-6 control-label text-right"><span style="color: red;">*</span>注册账号:</label>
+
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control m-t-n-xs text-limit"
+                                           ng-model="registerData.account_name" title="请控制在50个字以内"
+                                           pattern="^[\s\S]{1,50}$" required=""/>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <label class="col-sm-4 control-label text-right"><span style="color: red;">*</span>客户电话:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs text-limit"
+                                           ng-model="registerData.phone" title="(0551-5534567 或者 13866665688)"
+                                           pattern="^(\d{3,4}-)?\d{7,8}$|1[3578][0-9]{9}$|15[89]\d{8}$" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md" ng-if='(selectApplyType.name==="退货")'>
+                            <div class="col-sm-6">
+                                <label class="col-sm-6 control-label text-right">银行名称:</label>
+
+                                <div class="col-sm-6">
+                                    <select class="form-control w-full m-t-n-xs" style="width: 176px;"
+                                            ng-model="registerData.card_bank"
+                                            ng-options="bankName.name for bankName in bankNames" required>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <label class="col-sm-4 control-label text-right"><span style="color: red;">*</span>帐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs text-limit"
+                                           ng-model="registerData.card_no" pattern="^\d{16,19}$" title="(请填写16-19位数字的帐号)"
+                                           required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-6 control-label text-right"><span style="color: red;">*</span>购买时间:</label>
+
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control text-limit"
+                                           datepicker-popup="yyyy-MM-dd" max-date="now"
+                                           ng-click="$event.preventDefault();$event.stopPropagation();toOpened = true; fromOpened = false;"
+                                           ng-model="registerData.buy_time" is-open="toOpened"
+                                           required title="(格式为：yyyy-MM-dd)"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <label class="col-sm-4 control-label text-right"><span style="color: red;">*</span>申请原因:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control m-t-n-xs" style="width:176px;"
+                                            ng-model="registerData.reason"
+                                            ng-options="applyReasons.name for applyReasons in applyReasons">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <label class="col-sm-3 control-label text-right"><span
+                                    style="color: red;">*</span>客户地址:</label>
+
+                            <div class="col-sm-8">
+                                <select class="form-control m-t-n-xs col m-r-sm" style="width: 30%"
+                                        ng-model="province" id="province1"
+                                        ng-options="province.region_name for province in provinces"
+                                        ng-change="getCities(province.region_id)">
+                                </select>
+                                <select class="form-control m-t-n-xs col m-r-sm" style="width: 30%"
+                                        ng-model="city" id="city1"
+                                        ng-options="city.region_name for city in cities"
+                                        ng-change="getCounties(city.region_id)">
+                                </select>
+                                <select class="form-control m-t-n-xs col m-r-sm" style="width: 30%"
+                                        ng-model="county" id="county1"
+                                        ng-options="county.region_name for county in counties">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <label class="col-sm-3 control-label text-right"><span
+                                    style="color: red;">*</span>详细地址:</label>
+
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control m-t-n-xs w-full text-limit w-adjust"
+                                       style="width: 495px"
+                                       ng-model="registerData.address" title="请控制在500个字以内"
+                                       pattern="^[\s\S]{1,500}$" required/>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <h6 class="m-l-lg font-bold">货物信息</h6>
+                        </div>
+
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-6 control-label text-right"><span style="color: red;">*</span>商品编号:</label>
+
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control m-t-n-xs text-limit"
+                                           ng-model="registerData.sku" title="请控制在100个数字以内"
+                                           pattern="^[\s\S]{1,100}$" required/>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+
+                                <label class="col-sm-4 control-label text-right"><span style="color: red;">*</span>商品种类:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control m-t-n-xs" style="width:176px;"
+                                            ng-model="selectProductType"
+                                            ng-options="productType.name for productType in productTypes">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <label class="col-sm-3 control-label text-right">故障描述:</label>
+
+                            <div class="col-sm-7">
+                        <textarea class="form-control w-full" rows="3" style="width: 495px"
+                                  ng-model="registerData.fault_description" title="请控制在125个字以内"
+                                  pattern="^[\s\S]{1,125}$"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" ng-click="registerBill(registerform.$valid)">
+                            保 存
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            取 消
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 客诉模块--修改页面 -->
+    <div class="modal fade" id="modify" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">客诉登记修改</h5>
+                </div>
+                <form name="modifyform" class="form-horizontal form-validation">
+                    <div class="modal-body clearfix">
+                        <div class="row">
+                            <h6 class="m-l-lg font-bold">客户信息</h6>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="col-sm-6 control-label text-right"><span style="color: red;">*</span>申请类型:</label>
+
+                                <div class="col-sm-6">
+                                    <select class="form-control w-full m-t-n-xs" style="width: 176px;"
+                                            ng-model="modifyData.selectApplyType"
+                                            ng-options="applyType.name for applyType in applyTypes">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <label class="col-sm-4 control-label text-right"><span style="color: red;">*</span>客户姓名:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs text-limit"
+                                           ng-model="modifyData.client_name" title="请控制在50个字以内"
+                                           pattern="^[\s\S]{1,50}$" required/>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-6 control-label text-right"><span style="color: red;">*</span>注册账号:</label>
+
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control m-t-n-xs text-limit"
+                                           ng-model="modifyData.account_name" title="请控制在50个字以内"
+                                           pattern="^[\s\S]{1,50}$" required/>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <label class="col-sm-4 control-label text-right"><span style="color: red;">*</span>客户电话:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs text-limit"
+                                           ng-model="modifyData.phone" title="(0551-5534567 或者 13866665688)"
+                                           pattern="^(\d{3,4}-)?\d{7,8}$|1[3578][0-9]{9}$|15[89]\d{8}$" required/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row m-t-md" ng-if='(modifyData.selectApplyType.name==="退货")'>
+                            <div class="col-sm-6">
+                                <label class="col-sm-6 control-label text-right"><span style="color: red;">*</span>银行名称:</label>
+
+                                <div class="col-sm-6">
+                                    <select class="form-control w-full m-t-n-xs" style="width: 176px;"
+                                            ng-model="modifyData.card_bank"
+                                            ng-options="bankName.name for bankName in bankNames" required>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <label class="col-sm-4 control-label text-right"><span style="color: red;">*</span>帐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs text-limit"
+                                           ng-model="modifyData.card_no" pattern="^\d{16,19}$" title="(请填写16-19位数字的帐号)"
+                                           required/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-6 control-label text-right"><span style="color: red;">*</span>购买时间:</label>
+
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control text-limit"
+                                           datepicker-popup="yyyy-MM-dd" max-date="now"
+                                           ng-click="$event.preventDefault();$event.stopPropagation();toOpened = true; fromOpened = false;"
+                                           ng-model="modifyData.buy_time" is-open="toOpened"
+                                           required title="(格式为：yyyy-MM-dd)"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <label class="col-sm-4 control-label text-right"><span style="color: red;">*</span>申请原因:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control m-t-n-xs" style="width:176px;"
+                                            ng-model="modifyData.reason"
+                                            ng-options="applyReasons.name for applyReasons in applyReasons">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <label class="col-sm-3 control-label text-right"><span style="color: red;">*</span>客户地址:</label>
+
+                            <div class="col-sm-8">
+                                <select class="form-control m-t-n-xs col m-r-sm" style="width: 30%"
+                                        ng-model="province" id="province2"
+                                        ng-options="province.region_name for province in provinces"
+                                        ng-change="getCities(province.region_id)">
+                                </select>
+                                <select class="form-control m-t-n-xs col m-r-sm" style="width: 30%"
+                                        ng-model="city" id="city2"
+                                        ng-options="city.region_name for city in cities"
+                                        ng-change="getCounties(city.region_id)">
+                                </select>
+                                <select class="form-control m-t-n-xs col m-r-sm" style="width: 30%"
+                                        ng-model="county" id="county2"
+                                        ng-options="county.region_name for county in counties">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <label class="col-sm-3 control-label text-right"><span style="color: red;">*</span>详细地址:</label>
+
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control m-t-n-xs w-full text-limit w-adjust"
+                                       style="width: 495px"
+                                       ng-model="modifyData.address" title="请控制在500个字以内"
+                                       pattern="^[\s\S]{1,500}$" required/>
+                            </div>
+                        </div>
+
+                        <div class="row m-t-md">
+                            <h6 class="m-l-lg font-bold">货物信息</h6>
+                        </div>
+
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-6 control-label text-right"><span style="color: red;">*</span>商品编号:</label>
+
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control m-t-n-xs text-limit"
+                                           ng-model="modifyData.sku" title="请控制在100个数字以内"
+                                           pattern="^[\s\S]{1,100}$" required/>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <label class="col-sm-4 control-label text-right"><span style="color: red;">*</span>商品种类:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control m-t-n-xs" style="width:176px;"
+                                            ng-model="modifyData.productType"
+                                            ng-options="productType.name for productType in productTypes">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <label class="col-sm-3 control-label text-right">故障描述:</label>
+
+                            <div class="col-sm-7">
+                        <textarea class="form-control w-full" rows="3" style="width: 495px"
+                                  ng-model="modifyData.fault_description" title="请控制在125个字以内"
+                                  pattern="^[\s\S]{1,125}$"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success"
+                                ng-click="updateBill(modifyform.$valid)">
+                            保 存
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            取 消
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 客诉模块--办结 -->
+    <div class="modal fade" id="archive" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">办 结</h5>
+                </div>
+                <div class="modal-body clearfix">
+                    <div class="row">
+                        <label class="col-sm-3 control-label text-right">办结备注:</label>
+
+                        <div class="col-sm-7">
+                        <textarea class="form-control w-full" rows="3"
+                                  ng-model="archiveMemo" placeholder="请输入办结备注信息."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success"
+                            ng-click="archiveBill()">
+                        办 结
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        取 消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 客诉模块--重启案件 -->
+    <div class="modal fade" id="reopen" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">重 启</h5>
+                </div>
+                <div class="modal-body clearfix">
+                    <div class="row">
+                        <label class="col-sm-3 control-label text-right">重启备注:</label>
+
+                        <div class="col-sm-7">
+                        <textarea class="form-control w-full" rows="3"
+                                  ng-model="reopenMemo" placeholder="请输入重启备注信息."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal"
+                            ng-click="reopenBill()">
+                        确 定
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        取 消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 客诉模块--质量检测 -->
+    <div class="modal fade" id="check" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">质量检测</h5>
+                </div>
+                <form name="checkform" class="form-horizontal form-validation">
+                    <div class="modal-body clearfix">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">申请类型:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control w-full m-t-n-xs" ng-model="checkData.applyName"
+                                            ng-options="applyType.name for applyType in applyTypes" ng-disabled="true">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">客户姓名:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="checkData.customerName" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">注册名称:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="checkData.registerName" ng-disabled="true"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">联系方式:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="checkData.customerPhone" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">商品编号:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="checkData.productNo" ng-disabled="true"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">商品类型:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control w-full m-t-n-xs" ng-model="checkData.productType"
+                                            ng-options="productType.name for productType in productTypes"
+                                            ng-disabled="true">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">购买时间:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="checkData.buyTime" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">故障描述:</label>
+
+                                <div class="col-sm-8">
+                             <textarea class="form-control w-modify-lg" rows="3"
+                                       ng-model="checkData.faultDesc" ng-disabled="true"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">检测结果:</label>
+
+                                <div class="col-sm-8">
+                                    <select id='checkResult' class="form-control w-full m-t-n-xs"
+                                            ng-model="checkData.checkedResult"
+                                            ng-options="result.name for result in checkResults" required>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">备 注:</label>
+
+                                <div class="col-sm-8">
+                                    <textarea class="form-control w-modify-lg" rows="3"
+                                              ng-model="checkData.memo"></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success"
+                                ng-click="qualityTest(checkform.$valid)">
+                            保 存
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            取 消
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 客诉模块--主管审核 -->
+    <div class="modal fade" id="cs_approve" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">主管审核</h5>
+                </div>
+                <form name="csapproveform" class="form-horizontal form-validation">
+                    <div class="modal-body clearfix">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">申请类型:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control w-full m-t-n-xs" ng-model="approveData.applyName"
+                                            ng-options="applyType.name for applyType in applyTypes" ng-disabled="true">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">客户姓名:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="approveData.customerName" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">注册名称:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="approveData.registerName" ng-disabled="true"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">联系方式:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="approveData.customerPhone" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">商品编号:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="approveData.productNo" ng-disabled="true"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">商品类型:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control w-full m-t-n-xs" ng-model="approveData.productType"
+                                            ng-options="productType.name for productType in productTypes"
+                                            ng-disabled="true">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">购买时间:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="approveData.buyTime" ng-disabled="true"/>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">故障描述:</label>
+
+                                <div class="col-sm-8">
+                                    <textarea class="form-control w-modify-lg" rows="3"
+                                              ng-model="approveData.faultDesc" ng-disabled="true"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">检测结果:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control w-full m-t-n-xs" ng-model="approveData.checkedResult"
+                                            ng-options="checkResult.name for checkResult in checkResults"
+                                            ng-disabled="true">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">检员意见:</label>
+
+                                <div class="col-sm-8">
+                               <textarea class="form-control w-modify-lg" rows="3"
+                                         ng-model="approveData.inspectorOpinion" ng-disabled="true"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">主管意见:</label>
+
+                                <div class="col-sm-8">
+                               <textarea class="form-control w-modify-lg" rows="3"
+                                         ng-model="approveData.managerOpinion"
+                                         placeholder="请输入您的意见." required></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success"
+                                ng-click="csPass(1, csapproveform.$valid)">
+                            通 过
+                        </button>
+                        <button type="submit" class="btn btn-default"
+                                ng-click="csPass(2, csapproveform.$valid)">
+                            不通过
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            取 消
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--客诉模块--收货-->
+    <div class="modal fade" id="receive_goods" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <form name="recvform" class="form-horizontal form-validation">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">收货单</h5>
+                    </div>
+                    <div class="modal-body clearfix">
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">申请类型:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control m-t-n-xs w-full" ng-model="acceptGoodsData.applyType"
+                                            ng-disabled="true" ng-options="type.name for type in applyTypes">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">姓名:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs w-full" ng-disabled="true"
+                                           ng-model="acceptGoodsData.clientName" placeholder="name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">注册名称:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs w-full" ng-disabled="true"
+                                           ng-model="acceptGoodsData.regName"
+                                           placeholder="app registery name">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">联系方式:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs w-full" ng-disabled="true"
+                                           ng-model="acceptGoodsData.telephone" placeholder="telephone">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">商品编号:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs w-full" ng-disabled="true"
+                                           ng-model="acceptGoodsData.productNo" placeholder="product no">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">商品类型:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control m-t-n-xs w-full" ng-model="acceptGoodsData.productType"
+                                            ng-disabled="true" ng-options="type.name for type in productTypes">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">收货时间:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" id="recvTime" class="form-control m-t-n-xs w-full"
+                                           ng-model="acceptGoodsData.recvDate" required/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">收货人:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs w-full" ng-disabled="true"
+                                           ng-model="adminInfo.human_name" placeholder="reveiver">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">快递单号:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" name="expressNo" required
+                                           class="form-control m-t-n-xs w-full" title="快递单号为字母、数字或他们的组合"
+                                           pattern="^[a-zA-Z0-9]+$"
+                                           ng-model="acceptGoodsData.trackNo" placeholder="tracking no">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">快递公司:</label>
+
+                                <div class="col-sm-8">
+                                    <select id="express" class="form-control m-t-n-xs w-full"
+                                            ng-model="acceptGoodsData.express"
+                                            ng-options="type.name for type in expressCompanys" required>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button ng-click="saveRecvGoods(recvform.$valid)" type="submit" class="btn btn-success">
+                            保存
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            取消
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 客诉模块--案件核实 -->
+    <div class="modal fade" id="verify" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">案件核实</h5>
+                </div>
+                <form name="verifyform" class="form-horizontal form-validation">
+                    <div class="modal-body clearfix">
+                        <div class="row">
+                            <h6 class="m-l-lg font-bold">客户信息</h6>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="col-sm-6 control-label text-right">申请类型:</label>
+
+                                <div class="col-sm-6">
+                                    <select class="form-control w-full m-t-n-xs" style="width: 176px;"
+                                            ng-model="verifyData.selectApplyType"
+                                            ng-options="applyType.name for applyType in applyTypes">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">客户姓名:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs text-limit"
+                                           ng-model="verifyData.user_name" required/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-6 control-label text-right">注册账号:</label>
+
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control m-t-n-xs text-limit"
+                                           ng-model="verifyData.app_account" required/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">客户电话:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs text-limit"
+                                           ng-model="verifyData.user_contact" title="(0551-5534567 或者 13866665688)"
+                                           pattern="^(\d{3,4}-)?\d{7,8}$|1[3578][0-9]{9}$|15[89]\d{8}$" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md" ng-if='(verifyData.selectApplyType.name==="退货")'>
+                            <div class="col-sm-6">
+                                <label class="col-sm-6 control-label text-right">银行卡号:</label>
+
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control m-t-n-xs text-limit"
+                                           ng-model="verifyData.refund_account" title="(请填写银行卡号或其他支付账号)"
+                                           required/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">银行名称:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control w-full m-t-n-xs" style="width: 176px;"
+                                            ng-model="verifyData.card_bank"
+                                            ng-options="bankName.name for bankName in bankNames" required>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-6 control-label text-right">购买时间:</label>
+
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control text-limit"
+                                           datepicker-popup="yyyy-MM-dd" max-date="now"
+                                           ng-click="$event.preventDefault();$event.stopPropagation();toOpened = true; fromOpened = false;"
+                                           ng-model="verifyData.buy_time" is-open="toOpened"
+                                           required title="(格式为：yyyy-MM-dd)"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">申请原因:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control m-t-n-xs" style="width:176px;"
+                                            ng-model="verifyData.reason"
+                                            ng-options="applyReasons.name for applyReasons in applyReasons">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <label class="col-sm-3 control-label text-right">客户地址:</label>
+
+                            <div class="col-sm-8">
+                                <select class="form-control m-t-n-xs col m-r-sm" style="width: 30%"
+                                        ng-model="province" id="province3"
+                                        ng-options="province.region_name for province in provinces"
+                                        ng-change="getCities(province.region_id)">
+                                </select>
+                                <select class="form-control m-t-n-xs col m-r-sm" style="width: 30%"
+                                        ng-model="city" id="city3"
+                                        ng-options="city.region_name for city in cities"
+                                        ng-change="getCounties(city.region_id)">
+                                </select>
+                                <select class="form-control m-t-n-xs col m-r-sm" style="width: 30%"
+                                        ng-model="county" id="county3"
+                                        ng-options="county.region_name for county in counties">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <label class="col-sm-3 control-label text-right">详细地址:</label>
+
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control m-t-n-xs w-full text-limit w-adjust"
+                                       style="width: 480px"
+                                       ng-model="verifyData.address" required/>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <h6 class="m-l-lg font-bold">货物信息</h6>
+                        </div>
+
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-6 control-label text-right">商品编号:</label>
+
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control m-t-n-xs text-limit"
+                                           ng-model="verifyData.sku" required/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">商品种类:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control m-t-n-xs" style="width:176px;"
+                                            ng-model="verifyData.productType"
+                                            ng-options="productType.name for productType in productTypes">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <label class="col-sm-3 control-label text-right">故障描述:</label>
+
+                            <div class="col-sm-7">
+                        <textarea class="form-control w-full" rows="3" style="width: 480px"
+                                  ng-model="verifyData.apply_reason"></textarea>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <label class="col-sm-3 control-label text-right">处理人备注:</label>
+
+                            <div class="col-sm-7">
+                        <textarea class="form-control w-full" rows="3" style="width: 480px"
+                                  ng-model="verifyData.comment"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" ng-click="verifyBill(0, verifyform.$valid)">
+                            通 过
+                        </button>
+                        <button type="submit" class="btn btn-default" ng-click="verifyBill(1, verifyform.$valid)">
+                            不通过
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            取 消
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,23 @@
+{
+  "name": "newooeyes",
+  "version": "1.0.0",
+  "description": "Front end for newooeyes",
+  "scripts": {
+    "init": "npm install",
+    "start": "bower install",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Leo.Liu",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-csso": "^2.0.0",
+    "gulp-filter": "^4.0.0",
+    "gulp-rev-all": "^0.8.24",
+    "gulp-uglify": "^1.5.3",
+    "gulp-useref": "^3.1.0",
+    "wiredep": "^4.0.0"
+  },
+  "dependencies": {}
+}

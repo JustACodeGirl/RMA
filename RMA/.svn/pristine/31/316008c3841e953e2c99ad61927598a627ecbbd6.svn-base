@@ -1,0 +1,125 @@
+$(document).ready(function () {
+    (function () {
+        $('#fullpage').fullpage({
+            //Navigation
+            menu: '#myMenu', //TO BE DONE
+            lockAnchors: false, //OK
+            anchors: ['COVER', 'STORY', 'POSITION', 'CUSTOMIZE', 'CONNECTIVITY', 'MULTIROOM', 'MICROPHONE', 'ECO', 'JOIN US'], //OK
+            navigation: true, //OK, show a navigation bar made up of small circles.
+            navigationPosition: 'right', //OK
+            navigationTooltips: ['COVER', 'STORY', 'POSITION', 'CUSTOMIZE', 'CONNECTIVITY', 'MULTIROOM', 'MICROPHONE', 'ECO', 'JOIN US'], //OK
+            showActiveTooltip: false, //OK
+            slidesNavigation: true, //OK
+            slidesNavPosition: 'bottom', //TO BE DONE
+
+            //Scrolling
+            css3: true, //OK
+            scrollingSpeed: 700, //OK, to be confirmed
+            autoScrolling: true, //OK
+            fitToSection: true, //OK
+            fitToSectionDelay: 0, //OK, to be confirmed
+            scrollBar: false, //OK
+            easing: 'easeInOutCubic', //OK
+            easingcss3: 'ease', //OK
+            loopBottom: false, //OK
+            loopTop: false, //OK
+            loopHorizontal: false, //OK
+            continuousVertical: false, //OK
+            normalScrollElements: '#element1, .element2', //TO BE DONE
+            scrollOverflow: false, //OK
+            touchSensitivity: 15, //OK, to be confirmed
+            normalScrollElementTouchThreshold: 5, //OK, to be confirmed
+
+            //Accessibility
+            keyboardScrolling: true, //OK
+            animateAnchor: true, //OK
+            recordHistory: false, //OK
+
+            //Design
+            controlArrows: true, //OK
+            verticalCentered: false, //OK
+            resize: false, //OK, to be confirmed
+            sectionsColor: ['tranparent', '#fff', '#fff'], //TO BE DONE
+            // paddingTop: '110px', //TO BE DONE
+            // paddingBottom: '10px', //TO BE DONE
+            fixedElements: '#header', //OK
+            responsiveWidth: 992, //OK
+            responsiveHeight: 0, //OK
+
+            //Custom selectors
+            sectionSelector: '.section', //OK
+            slideSelector: '.slide', //OK
+
+            //events
+            onLeave: function (index, nextIndex, direction) {
+                $(".fadeInUp").removeClass('fadeInUp').hide();
+
+                if (nextIndex == 1) {
+                    $(".navbar-fixed-top").removeClass('top-nav-collapse');
+                    $(".navbar-fixed-top").removeClass('navbar-semi-invisible');
+                } else {
+                    $(".navbar-fixed-top").addClass('top-nav-collapse');
+                    $(".navbar-fixed-top").addClass('navbar-semi-invisible');
+                }
+
+                if (index == 3) {
+                    $(".bell-voice-hand").stop(true).css({
+                        left: 726,
+                        top: 820,
+                        opacity: 0
+                    });
+                    $(".bell-voice-light").stop(true).fadeOut();
+                    $(".bell-voice-phone").stop(true).css({
+                        top: 968,
+                        opacity: 0
+                    });
+                }
+            },
+            afterLoad: function (anchorLink, index) {
+                $(".tag" + index).addClass('fadeInUp').show();
+                if (index == 3) {
+                    $(".bell-voice-hand").animate({
+                        left: 526,
+                        top: 422,
+                        opacity: 1
+                    }, 800, 'easeInOutQuint')
+                        .delay().animate({
+                            left: 516,
+                            top: 420
+                        }, 200, 'easeInOutQuint')
+                        .delay().animate({
+                            left: 626,
+                            top: 422
+                        }, 200, 'easeInOutQuint')
+                        .promise().done(function () {
+                            $(".bell-voice-light").show().delay(200).fadeOut()
+                                .fadeIn().delay(200).fadeOut().fadeIn();
+
+                            $(".bell-voice-phone").animate({
+                                top: 368,
+                                opacity: 1
+                            }, 800);
+                        });
+                }
+            },
+            afterRender: function () {
+            },
+            afterResize: function () {
+            },
+            afterSlideLoad: function (anchorLink, index, slideAnchor, slideIndex) {
+            },
+            onSlideLeave: function (anchorLink, index, slideIndex, direction, nextSlideIndex) {
+            }
+        });
+    })();
+
+    (function () {
+        var agent = navigator.userAgent ? navigator.userAgent.toLowerCase() : '';
+        $('#androidApp').click(function () {
+            location.href = 'http://www.newooeyes.com/newooeyes.apk';
+        });
+        $('#iosApp').click(function () {
+            location.href = 'https://itunes.apple.com/app/id1100090322?mt=8';
+        });
+    })();
+});

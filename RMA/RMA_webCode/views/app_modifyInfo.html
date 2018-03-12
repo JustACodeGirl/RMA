@@ -1,0 +1,121 @@
+<!-- hbox layout -->
+<div class="hbox  hbox-auto-sm bg-white" ng-controller="systemController">
+    <div class="bui-nav-tab" style="height: 384px;margin-top: 50px ">
+        <div class="col-sm-8 col-xs-8">
+            <div class="col-sm-6 col-xs-6">
+                <div class="panel-body">
+                    <form class="bs-example form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-6 col-xs-5 control-label">头像：</label>
+                            <div class="col-sm-6 col-xs-7">
+                                <a class="pull-left thumb-md avatar">
+                                    <img src="resource/img/a0.jpg" alt="...">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-6 col-xs-5 control-label">用户名：</label>
+                            <div class="col-sm-6 col-xs-7 p_t7">{{adminInfo.human_name}}</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-6 col-xs-5 control-label">联系方式：</label>
+                            <div class="col-sm-6 col-xs-7 p_t7">{{adminInfo.phone}}</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-6 col-xs-5 control-label">创建时间：</label>
+                            <div class="col-sm-6 col-xs-7 p_t7">{{adminInfo.create_time |date:"yyyy-MM-dd HH:mm:ss"}}</div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xs-6">
+                <div class="panel-body">
+                    <form class="bs-example form-horizontal">
+                        <div class="form-group" style="height: 65px">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-6 col-xs-4 control-label">描述：</label>
+                            <div class="col-sm-6 col-xs-7 p_t7">
+                                {{adminInfo.description}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-6 col-xs-4 control-label">邮箱：</label>
+                            <div class="col-sm-6 col-xs-7 p_t7">{{adminInfo.email}}</div>
+                        </div>
+                        <div class="form-group" ng-hide="adminInfo.human_id == 1000">
+                            <label class="col-sm-6 col-xs-4 control-label">部门：</label>
+                            <div class="col-sm-6 col-xs-7 p_t7">{{adminInfo.unit_name}}</div>
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <button data-toggle="modal"
+                            data-target="#updateHuman"
+                            class="btn btn-bl float_r m-r-md">
+                        修 改
+                    </button>
+                </div>
+                <div class="modal fade" id="updateHuman" tabindex="-1" role="dialog">
+                    <div class="modal-dialog-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">修改用户</h5>
+                            </div>
+                            <div class="modal-body clearfix">
+                                <div class="row m-t-md">
+                                    <label class="col-sm-3 control-label text-right">用户名称:</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control m-t-n-xs text-limit"
+                                               ng-model="adminInfo.human_name"/>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <label class="col-sm-3 control-label text-right">描述:</label>
+
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control m-t-n-xs text-limit"
+                                               ng-model="adminInfo.description"/>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <label class="col-sm-3 control-label text-right">联系方式:</label>
+
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control m-t-n-xs text-limit"
+                                               ng-model="adminInfo.phone"/>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md">
+                                    <label class="col-sm-3 control-label text-right">邮箱:</label>
+
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control m-t-n-xs text-limit"
+                                               ng-model="adminInfo.email"/>
+                                    </div>
+                                </div>
+                                <div class="row m-t-md" ng-hide="adminInfo.human_id == 1000">
+                                    <label class="col-sm-3 control-label text-right">部门：</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control m-t-n-xs text-limit"
+                                               ng-disabled="true"
+                                               ng-model="adminInfo.unit_name"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer text-center">
+                                <button type="button"  class="btn btn-success" data-dismiss="modal" ng-click="modifyHuman(adminInfo)">
+                                    保 存
+                                </button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">
+                                    取 消
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /hbox layout -->

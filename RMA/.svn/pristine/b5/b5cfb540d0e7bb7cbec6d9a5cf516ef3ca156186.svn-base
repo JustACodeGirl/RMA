@@ -1,0 +1,10 @@
+<div class="header">
+  <div class="dl-title m-t">豪威科技有限公司售后服务系统
+  </div>
+  <div class="dl-log m-t">
+    <div class="pull-right">
+      <span class="">欢迎您，</span>
+      <span class="">{{adminInfo.human_name}}&nbsp;&nbsp;&nbsp;&nbsp;<a ng-click="logout()" title="退出系统" class="dl-log-quit">[退出]</a></span>
+    </div>
+  </div>
+</div>

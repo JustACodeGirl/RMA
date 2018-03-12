@@ -1,0 +1,81 @@
+"use strict";
+
+var gulp = require('gulp'),
+    clean = require('gulp-clean'),
+    RevAll = require('gulp-rev-all'),
+    uglify = require('gulp-uglify'),
+    filter = require('gulp-filter'),
+    csso = require('gulp-csso'),
+    useref = require('gulp-useref');
+
+var srcPath = 'src/**';
+
+gulp.task('wiredep', function () {
+    var wiredep = require('wiredep').stream;
+    return gulp.src(['src/**/*.html'])
+        .pipe(wiredep({
+            directory: 'bower_components',
+            dependencies: true,
+            devDependencies: true
+        }))
+        .pipe(gulp.dest('src'));
+});
+
+gulp.task('clean', function () {
+    return gulp.src('dist')
+        .pipe(clean());
+});
+
+gulp.task('fonts', function () {
+    return gulp.src('bower_components/bootstrap/dist/fonts/*')
+        .pipe(gulp.dest('dist/fonts/'));
+});
+
+gulp.task('default', ['clean','wiredep'], function () {
+
+    var jsFilter = filter("**/*.js",{restore: true});
+    var cssFilter = filter("**/*.css",{restore: true});
+    var htmlFilter = filter('**/*.html',{restore: true});
+
+    var revAll = new RevAll({
+
+        //不重命名文件
+        dontRenameFile: ['.html'],
+
+        //无需关联处理文件
+        dontGlobal: [/^\/favicon.ico$/, '.bat', '.txt'],
+
+        dontUpdateReference: ['.html'],
+
+        //该项配置只影响绝对路径的资源
+        prefix: ''
+    });
+
+    gulp.run('fonts');
+
+    return gulp.src([srcPath])
+        //合并html里面的js/css
+        .pipe(htmlFilter)
+        .pipe(useref())
+        .pipe(htmlFilter.restore)
+
+        //压缩js
+        .pipe(jsFilter)
+        .pipe(uglify())
+        .pipe(jsFilter.restore)
+
+        //压缩css
+        .pipe(cssFilter)
+        .pipe(csso())
+        .pipe(cssFilter.restore)
+
+        //加MD5后缀
+        .pipe(revAll.revision())
+
+        //输出
+        .pipe(gulp.dest('dist'))
+
+        //生成映射json文件
+        .pipe(revAll.manifestFile())
+        .pipe(gulp.dest('dist'));
+});

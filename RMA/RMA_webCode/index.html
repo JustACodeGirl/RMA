@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="app">
+<head>
+  <meta charset="utf-8"/>
+  <title>豪威后台管理系统</title>
+  <meta name="description"
+        content="app, web app, responsive, responsive layout, admin, admin panel, admin dashboard, flat, flat ui, ui kit, AngularJS, ui route, charts, widgets, components"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <link rel="stylesheet" href="public/css/jquery-ui.css" type="text/css"/>
+  <link rel="stylesheet" href="public/css/bootstrap.css" type="text/css"/>
+  <link rel="stylesheet" href="public/css/animate.css" type="text/css"/>
+  <link rel="stylesheet" href="public/css/font-awesome.min.css" type="text/css"/>
+  <link rel="stylesheet" href="public/css/simple-line-icons.css" type="text/css"/>
+  <link rel="stylesheet" href="public/css/font.css" type="text/css"/>
+  <link rel="stylesheet" href="css/app.css" type="text/css"/>
+  <link rel="stylesheet" href="css/login.css" type="text/css"/>
+  <link rel="stylesheet" href="public/css/toastr.css" type="text/css"/>
+  <link rel="stylesheet" href="public/css/jquery-ui-timepicker-addon.css" type="text/css"/>
+  <link href="assets/css/bui-min.css" rel="stylesheet" type="text/css"/>
+  <link href="assets/css/main.css" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="public/js/jquery/fullcalendar/fullcalendar.css"/>
+  <link rel="stylesheet" href="public/js/jquery/fullcalendar/theme.css"/>
+</head>
+<body ng-controller="AppCtrl">
+<div class="app" style="background-color: #e8e9ee;min-width: 1024px"
+     id="app"
+     ng-class="{'app-header-fixed':app.settings.headerFixed, 'app-aside-fixed':app.settings.asideFixed, 'app-aside-folded':app.settings.asideFolded, 'app-aside-dock':app.settings.asideDock, 'container':app.settings.container}"
+     ui-view></div>
+<!-- jQuery -->
+<script src="public/js/jquery/jquery.min.js"></script>
+<script src="public/js/jquery/jquery.PrintArea.js"></script>
+<script src="public/js/jquery/jquery-ui.min.js"></script>
+<script src="public/js/jquery/bootstrap.min.js"></script>
+<script src="public/js/jquery/toast/toastr.js"></script>
+<script src="public/js/jquery/jquery-ui-timepicker-addon.js"></script>
+<script src="public/js/jquery/jquery-ui-timepicker-zh-CN.js"></script>
+<script src="public/js/jquery/jquery.ui.datepicker-zh-CN.js"></script>
+<script src="public/js/jquery/chart/flot/jquery.flot.min.js"></script>
+<script src="public/js/jquery/chart/flot/jquery.flot.tooltip.min.js"></script>
+<script src="public/js/jquery/chart/flot/jquery.flot.resize.js"></script>
+<script src="public/js/jquery/chart/flot/jquery.flot.orderBars.js"></script>
+<script src="public/js/jquery/chart/flot/jquery.flot.spline.js"></script>
+<script src="public/js/jquery/chart/flot/jquery.flot.pie.min.js"></script>
+<script src="public/js/jquery/tableExport.js"></script>
+
+<!-- Angular -->
+<script src="public/js/angular/angular.js"></script>
+<script src="public/js/angular/angular-animate/angular-animate.js"></script>
+<script src="public/js/angular/angular-cookies/angular-cookies.js"></script>
+<script src="public/js/angular/angular-sanitize/angular-sanitize.js"></script>
+<script src="public/js/angular/angular-touch/angular-touch.js"></script>
+<script src="public/js/angular/angular-ui-router/angular-ui-router.js"></script>
+<script src="public/js/angular/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="public/js/angular/oclazyload/ocLazyLoad.js"></script>
+<script src="public/js/angular/angular-cookies/angular-cookies.js"></script>
+<script src="public/js/angular/angular-local/angular-locale_zh-cn.js"></script>
+<script src="public/js/angular/angular-file-upload/angular-file-upload.js"></script>
+<script src="public/js/jquery/fullcalendar/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="public/js/jquery/fullcalendar/moment.min.js"></script>
+<script src="public/js/jquery/fullcalendar/fullcalendar.min.js"></script>
+
+<!-- App -->
+<script src="js/tool.js"></script>
+<script src="js/app.js"></script>
+<script src="js/services/httpInterceptor.js"></script>
+<script src="js/config.js"></script>
+<script src="js/config.router.js"></script>
+<script src="js/config.lazyload.js"></script>
+<script src="js/directives/input_validate.js"></script>
+<script src="js/services/service.js"></script>
+<script src="js/services/systemModuleService.js"></script>
+<script src="js/main.js"></script>
+<script src="js/controllers/publicModal.js"></script>
+<script src="js/controllers/financeModal.js"></script>
+<script src="js/controllers/afterSale.js"></script>
+<script src="js/controllers/customerComplaints.js"></script>
+<script src="js/controllers/systemSetModule.js"></script>
+
+<script src="js/directives/setnganimate.js"></script>
+<script src="js/directives/imgLoad.js"></script>
+<script src="js/directives/ui-module.js"></script>
+<script src="js/directives/ui-nav.js"></script>
+<script src="js/directives/ui-validate.js"></script>
+<script src="js/directives/ui-toggleclass.js"></script>
+
+</body>
+</html>

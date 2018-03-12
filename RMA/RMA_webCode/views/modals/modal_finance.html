@@ -1,0 +1,474 @@
+<div ng-controller="FinanceModalController">
+    <!-- finance_apply_pay -->
+    <div class="modal fade" id="apply_pay" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">付款申请单</h5>
+                </div>
+                <form name="applyPayForm" class="form-horizontal form-validation">
+                    <div class="modal-body clearfix">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">申请类型:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control w-full m-t-n-xs" ng-model="applyRequest.applyType"
+                                            ng-options="applyType.name for applyType in applyTypes" ng-disabled="true">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">姓名:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="applyRequest.client_name" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">注册名称:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="applyRequest.account_name" ng-disabled="true"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">联系方式:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="applyRequest.phone" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">商品编号:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="applyRequest.sku" ng-disabled="true"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">商品类型:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control w-full m-t-n-xs" ng-model="applyRequest.productType"
+                                            ng-options="productType.name for productType in productTypes" ng-disabled="true">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">银行卡号:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="applyRequest.card_no" ng-disabled="true"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">银行:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control w-full m-t-n-xs" ng-model="applyRequest.bankName"
+                                            ng-options="bankName.name for bankName in bankNames" ng-disabled="true">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">产品金额:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="applyRequest.productFee" required/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">邮费:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="applyRequest.postage" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">会计人员:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="applyRequest.fa_accounting_human_name" ng-disabled="true"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">费用合计:</label>
+
+                                <div class="col-sm-8">
+                                    <p type="number" class="form-control w-full m-t-n-xs text-limit"
+                                       ng-bind="applyRequest.postage + applyRequest.productFee"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" ng-click="processApply(applyRequest, applyPayForm.$valid)">
+                            保 存
+                        </button>
+                        <button class="btn btn-default" data-dismiss="modal">
+                            关 闭
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- finance_pay_approve -->
+    <div class="modal fade" id="apply_pay_approve" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">付款申请审核</h5>
+                </div>
+                <form name="faapproveform" class="form-horizontal form-validation">
+                    <div class="modal-body clearfix">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">申请类型:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control w-full m-t-n-xs" ng-model="approveRequest.applyType"
+                                            ng-options="applyType.name for applyType in applyTypes" ng-disabled="true">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">姓名:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="approveRequest.client_name" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">注册名称:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="approveRequest.account_name" ng-disabled="true"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">联系方式:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="approveRequest.phone" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">商品编号:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="approveRequest.sku" ng-disabled="true"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">商品类型:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control w-full m-t-n-xs" ng-model="approveRequest.productType"
+                                            ng-options="productType.name for productType in productTypes" ng-disabled="true">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">银行卡号:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="approveRequest.card_no" ng-disabled="true"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">银行:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control w-full m-t-n-xs" ng-model="approveRequest.card_bank"
+                                            ng-options="bankName.name for bankName in bankNames" ng-disabled="true">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">产品金额:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="approveRequest.goods_price" ng-disabled="true"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">邮费:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="approveRequest.postage" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">会计人员:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="approveRequest.accounting_human_name" ng-disabled="true"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">费用合计:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="approveRequest.total_cost" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">审核人员:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="approveRequest.fa_approve_human_name" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">审核意见:</label>
+
+                                <div class="col-sm-8">
+                                    <textarea class="form-control w-modify-lg" rows="3"
+                                              ng-model="approveRequest.fa_approve_opinion"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" ng-click="processApprove(approveRequest, 1, faapproveform.$valid)">
+                        通过
+                    </button>
+                    <button type="submit" class="btn btn-default" ng-click="processApprove(approveRequest, 2, faapproveform.$valid)">
+                        不通过
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        关 闭
+                    </button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- finance_pay -->
+    <div class="modal fade" id="pay" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">付款申请出纳</h5>
+                </div>
+                <form name="payForm" class="form-horizontal form-validation">
+                    <div class="modal-body clearfix">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">申请类型:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control w-full m-t-n-xs" ng-model="payRequest.applyType"
+                                            ng-options="applyType.name for applyType in applyTypes" ng-disabled="true">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">姓名:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="payRequest.client_name" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">注册名称:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="payRequest.account_name" ng-disabled="true"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">联系方式:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="payRequest.phone" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">商品编号:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="payRequest.sku" ng-disabled="true"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">商品类型:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control w-full m-t-n-xs" ng-model="payRequest.productType"
+                                            ng-options="productType.name for productType in productTypes" ng-disabled="true">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">银行卡号:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="payRequest.card_no" ng-disabled="true"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">银行:</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control w-full m-t-n-xs" ng-model="payRequest.card_bank"
+                                            ng-options="bankName.name for bankName in bankNames" ng-disabled="true">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">产品金额:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="payRequest.goods_price" ng-disabled="true"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">邮费:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="payRequest.postage" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">会计人员:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="payRequest.accounting_human_name" ng-disabled="true"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">费用合计:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="payRequest.total_cost" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">审核人员:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="payRequest.fa_approve_human_name" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">审核意见:</label>
+
+                                <div class="col-sm-8">
+                                <textarea class="form-control w-modify-lg" rows="3"
+                                          ng-model="payRequest.fa_approve_opinion" ng-disabled="true"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">出纳人员:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="payRequest.cashier" ng-disabled="true"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t-md">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">实际付款:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="payRequest.real_pay" required/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">流水号:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control w-full m-t-n-xs text-limit"
+                                           ng-model="payRequest.pay_no" required/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" ng-click="processPay(payRequest, payForm.$valid)">
+                            保 存
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            关 闭
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

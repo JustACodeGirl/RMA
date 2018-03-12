@@ -1,0 +1,16 @@
+$(document).ready(function () {
+
+    window.scrollReveal = new scrollReveal({
+        over: '0.8s',
+        reset: true,
+        init: true
+    });
+
+    var agent = navigator.userAgent ? navigator.userAgent.toLowerCase() : '';
+    $('#androidApp').click(function () {
+        location.href = 'http://www.newooeyes.com/newooeyes.apk';
+    });
+    $('#iosApp').click(function () {
+        location.href = 'https://itunes.apple.com/app/id1100090322?mt=8';
+    });
+});

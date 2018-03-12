@@ -1,0 +1,154 @@
+<!-- hbox layout -->
+<div class="hbox hbox-auto-sm bg-white" ng-controller="RMAController">
+    <div class="bui-nav-tab m-t m-l-lg m-r-lg">
+        <div class="row form-inline">
+            <div class="form-group">
+                <ul class="nav nav-tabs" ng-class="{'nav-stacked': vertical, 'nav-justified': justified}">
+                    <li ng-repeat="tabMenu in app.tabMenuList | orderBy: 'display_order'"
+                        ng-class="{true: 'active', false: ''}[selectTabMenuId == tabMenu.tasklist_id]">
+                        <a ng-click="changeTab(tabMenu.tasklist_id)" class="ng-binding">{{tabMenu.display_name}}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="form-group m-t-xs pull-right">
+                <button ng-repeat="tabAction in app.tabActionList[selectTabMenuId] | orderBy: 'display_order' : true"
+                        data-toggle="modal"
+                        data-target="#{{tabAction.menu_name}}"
+                        class="btn pull-right m-r-sm"
+                        ng-click="broadCastInitMsg(tabAction.menu_name)"
+                        ng-class="{true: 'bg-info dkker', false: 'bg-default'}
+                                [isButtonShow(tabAction.menu_name)]"
+                        ng-disabled="!isButtonShow(tabAction.menu_name)">
+                    {{tabAction.display_name}}
+                </button>
+            </div>
+        </div>
+
+        <div class="row m-t" id='billTable' style="overflow-x: auto" ng-style="{height: billTableHeight}"
+             ng-if="!(selectTabMenuId == 26 || selectTabMenuId == 38)">
+            <table class="table table-bordered">
+                <thead>
+                <tr class="bg-light dker">
+                    <th class="w-xs text-center" ng-if="!(selectTabMenuId == 2)">受理</th>
+                    <th class="text-center"
+                        ng-repeat="tableHeader in app.tableHeaderList[selectTabMenuId] | filter: { 'is_visible': 0 } | orderBy: 'display_order'">
+                        {{tableHeader.display_name}}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="tableItem in app.tableItemList[selectTabMenuId]"
+                    ng-click="changeSelection(tableItem)" ng-class="{'bg-info dkker':tableItem.selected}"
+                    class="text-center">
+                    <td ng-if="!(selectTabMenuId == 2)">
+                        <i class="text-xs m-t-xs text-success fa fa-check-circle pull-left"
+                           ng-if="tableItem.human_id"><span
+                                class="font-bold"> 已受理</span></i>
+                        <i class="text-xs m-t-xs text-dark fa fa-minus-circle pull-left"
+                           ng-if="!tableItem.human_id"><span
+                                class="font-bold"> 未受理</span></i>
+
+                    </td>
+                    <td><a data-toggle="modal" data-target="#viewbill" class="btn-link"
+                           ng-click="viewBill(tableItem.bill_id)">{{tableItem.bill_no}}</a></td>
+                    <td>{{tableItem.apply_type_name}}</td>
+                    <td>{{tableItem.client_name}}</td>
+                    <td>{{tableItem.account_name}}</td>
+                    <td>{{tableItem.phone}}</td>
+                    <td>{{tableItem.sku}}</td>
+                    <td>{{tableItem.goods_type_name}}</td>
+                    <td>{{tableItem.apply_reason_name}}</td>
+                    <td style="background-color: #f06050;color:white" ng-if="!(selectTabMenuId == 2) && (tableItem.remain_time <= 0)">超时</td>
+                    <td style="background-color: #fad733" ng-if="!(selectTabMenuId == 2) && (0 < tableItem.remain_time && tableItem.remain_time <= tableItem.warning_time)">{{beautifyTime(tableItem.remain_time)}}</td>
+                    <td ng-if="!(selectTabMenuId == 2) && (tableItem.remain_time > tableItem.warning_time)">{{beautifyTime(tableItem.remain_time)}}</td>
+                </tr>
+                <!--<tr ng-repeat="tableItem in app.tableItemList[selectTabMenuId]"-->
+                    <!--ng-click="changeSelection(tableItem)" ng-class="{'bg-info dkker':tableItem.selected}"-->
+                    <!--class="text-center"-->
+                    <!--ng-if="0 < tableItem.remain_time && tableItem.remain_time <= tableItem.warning_time">-->
+                    <!--<td ng-if="!(selectTabMenuId == 2)">-->
+                        <!--<i class="text-xs m-t-xs text-success fa fa-check-circle pull-left"-->
+                           <!--ng-if="tableItem.human_id"><span-->
+                                <!--class="font-bold"> 已受理</span></i>-->
+                        <!--<i class="text-xs m-t-xs text-dark fa fa-minus-circle pull-left"-->
+                           <!--ng-if="!tableItem.human_id"><span-->
+                                <!--class="font-bold"> 未受理</span></i>-->
+
+                    <!--</td>-->
+                    <!--<td><a data-toggle="modal" data-target="#viewbill" class="btn-link"-->
+                           <!--ng-click="viewBill(tableItem.bill_id)">{{tableItem.bill_no}}</a></td>-->
+                    <!--<td>{{tableItem.apply_type_name}}</td>-->
+                    <!--<td>{{tableItem.client_name}}</td>-->
+                    <!--<td>{{tableItem.account_name}}</td>-->
+                    <!--<td>{{tableItem.phone}}</td>-->
+                    <!--<td>{{tableItem.sku}}</td>-->
+                    <!--<td>{{tableItem.goods_type_name}}</td>-->
+                    <!--<td>{{tableItem.apply_reason_name}}</td>-->
+                    <!--<td style="background-color: #fad733" ng-if="!(selectTabMenuId == 2)">{{beautifyTime(tableItem.remain_time)}}</td>-->
+                <!--</tr>-->
+                <!--<tr ng-repeat="tableItem in app.tableItemList[selectTabMenuId]"-->
+                    <!--ng-click="changeSelection(tableItem)" ng-class="{'bg-info dkker':tableItem.selected}"-->
+                    <!--class="text-center" ng-if="tableItem.remain_time > tableItem.warning_time">-->
+                    <!--<td ng-if="!(selectTabMenuId == 2)">-->
+                        <!--<i class="text-xs m-t-xs text-success fa fa-check-circle pull-left"-->
+                           <!--ng-if="tableItem.human_id"><span-->
+                                <!--class="font-bold"> 已受理</span></i>-->
+                        <!--<i class="text-xs m-t-xs text-dark fa fa-minus-circle pull-left"-->
+                           <!--ng-if="!tableItem.human_id"><span-->
+                                <!--class="font-bold"> 未受理</span></i>-->
+
+                    <!--</td>-->
+                    <!--<td><a data-toggle="modal" data-target="#viewbill" class="btn-link"-->
+                           <!--ng-click="viewBill(tableItem.bill_id)">{{tableItem.bill_no}}</a></td>-->
+                    <!--<td>{{tableItem.apply_type_name}}</td>-->
+                    <!--<td>{{tableItem.client_name}}</td>-->
+                    <!--<td>{{tableItem.account_name}}</td>-->
+                    <!--<td>{{tableItem.phone}}</td>-->
+                    <!--<td>{{tableItem.sku}}</td>-->
+                    <!--<td>{{tableItem.goods_type_name}}</td>-->
+                    <!--<td>{{tableItem.apply_reason_name}}</td>-->
+                    <!--<td ng-if="!(selectTabMenuId == 2)">{{beautifyTime(tableItem.remain_time)}}</td>-->
+                <!--</tr>-->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row m-t" id='appliedBillTable' style="overflow-x: auto" ng-style="{height: billTableHeight}"
+             ng-if="selectTabMenuId == 26 || selectTabMenuId == 38">
+            <table class="table table-bordered">
+                <thead>
+                <tr class="bg-light dker">
+                    <th class="text-center"
+                        ng-repeat="tableHeader in app.tableHeaderList[selectTabMenuId] | filter: { 'is_visible': 0 } | orderBy: 'display_order'">
+                        {{tableHeader.display_name}}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="tableItem in app.tableItemList[selectTabMenuId]"
+                    ng-click="changeSelection(tableItem)" ng-class="{'bg-info dkker':tableItem.selected}"
+                    class="text-center">
+                    <td>{{applyTypes[tableItem.apply_type - 1].name}}</td>
+                    <td>{{tableItem.user_name}}</td>
+                    <td>{{tableItem.app_account}}</td>
+                    <td>{{tableItem.user_contact}}</td>
+                    <td>{{productTypes[tableItem.goods_id - 1].name}}</td>
+                    <!--<td>{{applyReasons[tableItem.apply_reason -1].name}}</td>-->
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--<div class="text-center" ng-hide="app.tableItemList[selectTabMenuId].length < 12 && currentPage == 0">-->
+        <!--<button class="btn btn-default" ng-disabled="currentPage <= 0"-->
+        <!--ng-click="getRefundRequestListByPage('prev')">上一页-->
+        <!--</button>-->
+        <!--<span>第{{currentPage+1}}页</span>-->
+        <!--<button class="btn btn-default" ng-disabled="showedRefundRequests.length < pageSize"-->
+        <!--ng-click="getRefundRequestListByPage('next')">下一页-->
+        <!--</button>-->
+        <!--</div>-->
+    </div>
+    <div data-ng-include="'views/modals/modal_public.html'"></div>
+    <div data-ng-include="targetHumanModal.url"></div>
+</div>
+<!-- /hbox layout -->

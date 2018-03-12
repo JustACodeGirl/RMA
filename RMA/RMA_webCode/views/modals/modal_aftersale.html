@@ -1,0 +1,441 @@
+<div ng-controller="AfterSaleController">
+
+    <!--exchange-->
+    <div class="modal fade" id="exchange" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">换货单</h5>
+                </div>
+                <form name="exchangeform" class="form-horizontal form-validation">
+                    <div class="modal-body clearfix">
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">姓名:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs w-full" ng-disabled="true"
+                                           ng-model="exchangeData.clientName">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">联系方式:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs w-full" ng-disabled="true"
+                                           ng-model="exchangeData.telephone"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">联系地址:</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control w-modify-hg m-t-n-xs" rows="3"
+                                              ng-disabled="true" ng-model="exchangeData.address"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">更换商品编号:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs w-full" required
+                                           ng-model="exchangeData.productNo">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">更换商品类型:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control m-t-n-xs w-full" ng-model="exchangeData.productType" id="exchangeProductType"
+                                            ng-options="type.name for type in productTypes" required>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">换货备注:</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control m-t-n-xs w-modify-hg" rows="3"
+                                              ng-model="exchangeData.exchangememo"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button ng-click="saveExchange(exchangeform.$valid)" type="submit"
+                                class="btn btn-success">
+                            保存
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            取消
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--send-->
+    <div class="modal fade" id="send" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">发货单</h5>
+                </div>
+                <form name="sendform" class="form-horizontal form-validation">
+                    <div class="modal-body clearfix">
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">申请类型:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control m-t-n-xs w-full" ng-model="sendGoodsData.applyType"
+                                            ng-disabled="true" ng-options="type.name for type in applyTypes">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">姓名:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs w-full" ng-disabled="true"
+                                           ng-model="sendGoodsData.clientName">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">注册名称:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs w-full" ng-model="sendGoodsData.regName"
+                                           ng-disabled="true">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">联系方式:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs w-full" ng-disabled="true"
+                                           ng-model="sendGoodsData.telephone">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">商品编号:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs w-full" ng-disabled="true"
+                                           ng-model="sendGoodsData.productNo">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">商品类型:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control m-t-n-xs w-full" ng-model="sendGoodsData.productType"
+                                            ng-options="type.name for type in productTypes" ng-disabled="true">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">发货时间:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="sendTime" class="form-control m-t-n-xs w-full"
+                                           ng-model="sendGoodsData.sendDate" required/>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">发货人:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs w-full" ng-disabled="true"
+                                           ng-model="sendGoodsData.sender">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">快递单号:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs w-full" required
+                                           title="快递单号为字母、数字或他们的组合"
+                                           pattern="^[a-zA-Z0-9]+$"
+                                           ng-model="sendGoodsData.trackNo">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">快递公司:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control m-t-n-xs w-full" ng-model="sendGoodsData.express" id="sendExpress"
+                                            ng-options="type.name for type in expressCompanys" required>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button ng-click="saveSendGoods(sendform.$valid)" type="submit" class="btn btn-success">
+                            保存
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            取消
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--as_approve-->
+    <div class="modal fade" id="as_approve" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">售后主管审核</h5>
+                </div>
+                <form name="asApproveForm" class="form-horizontal form-validation">
+                    <div class="modal-body clearfix">
+                    <div class="row m-t">
+                        <div class="col-sm-6">
+                            <label class="col-sm-3 control-label text-right">姓名:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control m-t-n-xs w-full" ng-disabled="true"
+                                       ng-model="approveData.clientName">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-3 control-label text-right">联系方式:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control m-t-n-xs w-full" ng-disabled="true"
+                                       ng-model="approveData.telephone">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-t">
+                        <div class="col-sm-6">
+                            <label class="col-sm-3 control-label text-right">商品编号:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control m-t-n-xs w-full" ng-disabled="true"
+                                       ng-model="approveData.productNo">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-3 control-label text-right">商品类型:</label>
+                            <div class="col-sm-8">
+                                <select class="form-control m-t-n-xs w-full" ng-model="approveData.productType" ng-disabled="true"
+                                        ng-options="type.name for type in productTypes">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-t">
+                        <div class="col-sm-6">
+                            <label class="col-sm-3 control-label text-right">申请类型:</label>
+                            <div class="col-sm-8">
+                                <select class="form-control m-t-n-xs w-full" ng-model="approveData.applyType" ng-disabled="true"
+                                        ng-options="type.name for type in applyTypes">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-t">
+                        <div class="col-sm-6">
+                            <label class="col-sm-3 control-label text-right">联系地址:</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control m-t-n-xs w-modify-hg" rows="1" ng-disabled="true"
+                                          ng-model="approveData.address"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="approveData.applyType.name == '维修'">
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">维修方式:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control m-t-n-xs w-full" ng-model="approveData.repairType" ng-disabled="true"
+                                            ng-options="type.name for type in repairTypes">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">维修人员:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs w-full" ng-disabled="true"
+                                           ng-model="approveData.repairer">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">故障描述:</label>
+                                <div class="col-sm-8">
+                            <textarea class="form-control m-t-n-xs w-modify-hg" rows="3" ng-disabled="true"
+                                      ng-model="approveData.faultdesc"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">维修备注:</label>
+                                <div class="col-sm-8">
+                            <textarea class="form-control m-t-n-xs w-modify-hg" rows="3" ng-disabled="true"
+                                      ng-model="approveData.repairmemo"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="approveData.applyType.name == '换货'">
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">更换商品编号:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control w-full" ng-disabled="true"
+                                           ng-model="approveData.exproductNo">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">更换商品类型:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control w-full" ng-model="approveData.exproductType" ng-disabled="true"
+                                            ng-options="type.name for type in productTypes">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">换货专员:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs w-full" ng-disabled="true"
+                                           ng-model="approveData.exchanger">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">换货备注:</label>
+                                <div class="col-sm-8">
+                            <textarea class="form-control m-t-n-xs w-modify-hg" rows="3" ng-disabled="true"
+                                      ng-model="approveData.exchangememo"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-t">
+                        <div class="col-sm-6">
+                            <label class="col-sm-3 control-label text-right">审核人:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control m-t-n-xs w-full" ng-disabled="true"
+                                       ng-model="approveData.approver">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-t">
+                        <div class="col-sm-6">
+                            <label class="col-sm-3 control-label text-right">审核意见:</label>
+                            <div class="col-sm-8">
+                            <textarea class="form-control m-t-n-xs w-modify-hg" rows="3"
+                                      ng-model="approveData.comment" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button ng-click="saveAsApprove(1,asApproveForm.$valid)" type="submit" class="btn btn-success">
+                            通过
+                        </button>
+                        <button ng-click="saveAsApprove(2, asApproveForm.$valid)" type="submit" class="btn btn-default">
+                            不通过
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            取消
+                        </button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--repair-->
+    <div class="modal fade" id="repair" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">维修单</h5>
+                </div>
+                <form name="repairform" class="form-horizontal form-validation">
+                    <div class="modal-body clearfix">
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">姓名:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs w-full" ng-disabled="true"
+                                           ng-model="repairData.clientName">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">联系方式:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs w-full" ng-disabled="true"
+                                           ng-model="repairData.telephone">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">商品编号:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control m-t-n-xs w-full" ng-disabled="true"
+                                           ng-model="repairData.productNo">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">商品类型:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control m-t-n-xs w-full" ng-model="repairData.productType" ng-disabled="true"
+                                            ng-options="type.name for type in productTypes">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">故障原因:</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control m-t-n-xs w-modify-hg" rows="3" ng-disabled="true"
+                                        ng-model="repairData.cause"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">维修方式:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control m-t-n-xs w-full" ng-model="repairData.repairType" id="repairType"
+                                            ng-options="type.name for type in repairTypes" required>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-t">
+                            <div class="col-sm-6">
+                                <label class="col-sm-3 control-label text-right">维修备注:</label>
+                                <div class="col-sm-8">
+                            <textarea class="form-control m-t-n-xs w-modify-hg" rows="3"
+                                      ng-model="repairData.repairmemo"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button ng-click="saveRepair(repairform.$valid)" type="submit" class="btn btn-success">
+                                保存
+                            </button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                取消
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>

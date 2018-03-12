@@ -1,0 +1,93 @@
+<!-- hbox layout -->
+<div class="hbox hbox-auto-sm bg-white" ng-controller="ConsultController">
+  <div class="col-md-3 b b-light h-full" style="overflow-y: auto">
+    <div class="row text-center">
+      <h3>咨询回复</h3>
+    </div>
+
+    <div class="row m-t">
+      <div class="list-group">
+        <a class="list-group-item no-shadow"
+           style="border-radius: 0"
+           ng-class="{true:'active'}[consult == selectConsult]"
+           ng-repeat="consult in consultList"
+           ng-click="viewConsultDetail(consult)">
+          <h5 class="list-group-item-heading" ng-bind="consult.title"></h5>
+          <p class="list-group-item-text">
+            <span class="h6" ng-bind="consult.create_time | date: 'yyyy年MM月dd日 HH:mm:ss'"></span>
+            <span class="h6">&nbsp;&nbsp;&nbsp;用户{{consult.creator}}</span>
+          </p>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9 h-full" style="overflow-y: scroll">
+    <div class="row m-l">
+      <div class="col-md-10 ">
+        <h2 class="m-b-lg" ng-bind="selectConsult.title"></h2>
+      </div>
+    </div>
+
+    <div class="row m-l">
+      <div class="col-md-10  m-b">
+        <div class="row">
+          <div class="col-md-12 m-b">
+            <span ng-bind="selectConsult.create_time | date: 'yyyy年MM月dd日 HH:mm:ss'"></span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <p ng-bind-html="selectConsult.content | to_trusted"></p>
+          </div>
+        </div>
+        <div class="row" ng-if="selectConsult.attach1_url">
+          <div class="col-md-12">
+            <p class="attach" img-load ng-model="selectConsult.attach1_url"></p>
+          </div>
+        </div>
+        <div class="row" ng-if="selectConsult.attach2_url">
+          <div class="col-md-12">
+            <p class="attach" img-load ng-model="selectConsult.attach2_url"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row m-b-lg text-muted m-l" ng-if="selectConsult">
+      <div class="col-md-9 col-md-offset-1">
+        <div class="m-b" ng-repeat="reply in consultReplies">
+          <p ng-bind="reply.create_time | date: 'yyyy年MM月dd日 HH:mm:ss'"></p>
+          <p class="bg-light" style="border-radius: 2px;padding: 15px 0px 15px 8px;">
+            <span ng-if="reply.creator_type == 0">用户{{reply.creator}}:</span>
+            <span ng-if="reply.creator_type == 1">客服{{reply.creator == adminInfo.human_id ? adminInfo.human_name : reply.creator}}:</span>
+            <span ng-bind-html="reply.content | to_trusted"></span>
+            <span class="attach" style="display: block;" ng-if="reply.attach1_url" img-load ng-model="reply.attach1_url"></span>
+            <span class="attach" style="display: block;" ng-if="reply.attach2_url" img-load ng-model="reply.attach1_url"></span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row m-b-lg m-l" ng-if="selectConsult && selectConsult.status==0">
+      <div class="col-md-10">
+        <form name="ReplyForm">
+          <div class="form-group">
+            <label for="reply">回复:</label>
+            <textarea name="reply"
+                      id="reply"
+                      rows="3"
+                      class="form-control w-full"
+                      ng-model="newReply.content"
+                      required></textarea>
+          </div>
+          <div class="form-group">
+            <button type="submit"
+                    class="btn btn-primary pull-right"
+                    ng-click="ReplyForm.$valid ? replyConsult(newReply) : null;">提交
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div></div><!-- /hbox layout -->

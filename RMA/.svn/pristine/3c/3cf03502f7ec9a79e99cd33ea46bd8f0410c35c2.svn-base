@@ -1,0 +1,53 @@
+$(document).ready(function () {
+    if (document.cookie.indexOf('access_token') >= 0) {
+        var options = {
+            method: 'get',
+            url: "/api/user/current",
+            success: function (response) {
+                if (response.stateCode && /success/.test(response.stateCode)) {
+                    $('#signBtn').text('退出');
+                    $('#signName').text(response.data ? response.data.userName : "");
+                }
+            }
+        };
+        $.ajax(options);
+    }
+
+    $('#signBtn').click(function () {
+        if ($('#signBtn').text() == '登录') {
+            window.location.href = "login.html";
+        } else if ($('#signBtn').text() == '退出') {
+            var options = {
+                method: 'post',
+                url: "/api/user/logout",
+                success: function (response) {
+                    if (response.stateCode && /success/.test(response.stateCode)) {
+                        window.location.reload();
+                    }
+                }
+            };
+            $.ajax(options);
+        }
+
+    });
+
+    $('form[name="signin"]').submit(function () {
+        var options = {
+            method: 'post',
+            url: "/api/user/login",
+            data: {
+                userName: $('#userName').val(),
+                password: $('#password').val()
+            },
+            success: function (response) {
+                if (response.stateCode && /success/.test(response.stateCode)) {
+                    location.replace(document.referrer);
+                } else if (/InvalidUserOrPassword/.test(response.stateCode)) {
+                    toast('error', '', '用户名或密码错误', null);
+                }
+            }
+        };
+        $.ajax(options);
+        return false;
+    });
+});
